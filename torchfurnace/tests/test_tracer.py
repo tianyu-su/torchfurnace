@@ -10,5 +10,4 @@ from torchfurnace import Tracer
 
 from pathlib import Path
 
-tracer = Tracer(Path(r'E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace\torchfurnace\tests'), 'mine_network')
-tracer.tb
+tracer = Tracer(Path(r'.'), 'mine_network')

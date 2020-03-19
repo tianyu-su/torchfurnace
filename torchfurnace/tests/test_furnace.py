@@ -18,7 +18,7 @@ parser.add_argument('--add_test', default='test', type=str)
 args = parser.parse_args()
 experiment_name = '_'.join([args.dataset, ])
 
-eng = Engine(parser).experiment_name(experiment_name)
+# eng = Engine(parser).experiment_name(experiment_name)
 
 
 
