@@ -7,6 +7,11 @@ module description
 import torch
 
 __author__ = 'tianyu'
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.getcwd())))
+print(sys.path)
 
 from torchfurnace import Engine, Parser
 from torchvision import datasets
@@ -19,7 +24,6 @@ args = parser.parse_args()
 experiment_name = '_'.join([args.dataset, ])
 
 # eng = Engine(parser).experiment_name(experiment_name)
-
 
 
 # model = models.alexnet(pretrained=False)
@@ -44,3 +48,4 @@ experiment_name = '_'.join([args.dataset, ])
 #
 # optimizer = torch.optim.Adam(model.parameters())
 # eng.learning(model, optimizer, train_ds, val_ds)
+print(__file__)
