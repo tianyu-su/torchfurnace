@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4173d18-a0df-48d1-82bb-a8191b59b59f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" afterDir="false" />
@@ -18,17 +17,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_furnace.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" selection-start-line="12" selection-end-line="13" />
+            <state relative-caret-position="105">
+              <caret line="15" column="39" lean-forward="true" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="306">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="e#98#108#0" expanded="true" />
               </folding>
@@ -48,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_tracer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="204">
+              <caret line="12" column="66" selection-start-line="12" selection-start-column="66" selection-end-line="12" selection-end-column="66" />
               <folding>
                 <element signature="e#99#109#0" expanded="true" />
               </folding>
@@ -139,8 +138,8 @@
         <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" />
-        <option value="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" />
+        <option value="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" />
       </list>
     </option>
   </component>
@@ -353,12 +352,12 @@
       <workItem from="1584585558338" duration="1916000" />
       <workItem from="1584600392152" duration="12514000" />
       <workItem from="1584633561295" duration="5297000" />
-      <workItem from="1584639259266" duration="4960000" />
+      <workItem from="1584639259266" duration="5543000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96882000" />
+    <option name="totallyTimeSpent" value="97465000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -373,7 +372,7 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2304401" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2304401" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -387,7 +386,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.4327354" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.4327354" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32847533" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -828,27 +827,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_furnace.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" selection-start-line="12" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#98#108#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="15" column="39" lean-forward="true" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_tracer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="204">
+          <caret line="12" column="66" selection-start-line="12" selection-start-column="66" selection-end-line="12" selection-end-column="66" />
           <folding>
             <element signature="e#99#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#98#108#0" expanded="true" />
           </folding>
         </state>
       </provider>

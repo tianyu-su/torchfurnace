@@ -8,11 +8,12 @@ __author__ = 'tianyu'
 
 import sys
 from pathlib import Path
-print('add:',Path(__file__).absolute().parent.parent.paren)
+print('add:',str(Path(__file__).absolute().parent.parent.parent))
 
-sys.path.append(Path(__file__).absolute().parent.parent.parent)
+sys.path.append(str(Path(__file__).absolute().parent.parent.parent))
+print(sys.path)
 
-# from torchfurnace import ImageLMDB, ImageFolderLMDB
+from torchfurnace import ImageLMDB, ImageFolderLMDB
 
 # import matplotlib.pyplot as plt
 #
