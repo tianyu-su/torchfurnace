@@ -9,7 +9,8 @@ import torch
 __author__ = 'tianyu'
 import sys
 import os
-apd = os.path.dirname(os.path.dirname(os.getcwd()))
+apd = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 print('add',apd)
 sys.path.append(apd)
 print(sys.path)

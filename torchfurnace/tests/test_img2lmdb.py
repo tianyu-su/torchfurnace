@@ -9,7 +9,7 @@ __author__ = 'tianyu'
 import sys
 import os
 
-apd = os.path.dirname(os.path.dirname(os.getcwd()))
+apd = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 print('add',apd)
 sys.path.append(apd)
 print(sys.path)
@@ -21,6 +21,8 @@ from torchfurnace import ImageLMDB, ImageFolderLMDB
 # plt.imshow(dataset[0][0]) # PIL object
 # plt.axis('off')
 # plt.show()
-
-# print(os.path.dirname(os.getcwd()))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# print('hhh',BASE_DIR)
 print(__file__)
+
+
