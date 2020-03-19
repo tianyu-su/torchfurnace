@@ -10,6 +10,7 @@ __author__ = 'tianyu'
 import sys
 from pathlib import Path
 
+print('add:',Path(__file__).absolute().parent.parent.paren)
 sys.path.append(Path(__file__).absolute().parent.parent.parent)
 
 from torchfurnace import Engine, Parser

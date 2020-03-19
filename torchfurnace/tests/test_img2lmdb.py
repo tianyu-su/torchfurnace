@@ -8,6 +8,7 @@ __author__ = 'tianyu'
 
 import sys
 from pathlib import Path
+print('add:',Path(__file__).absolute().parent.parent.paren)
 
 sys.path.append(Path(__file__).absolute().parent.parent.parent)
 
@@ -22,7 +23,3 @@ sys.path.append(Path(__file__).absolute().parent.parent.parent)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print('hhh',BASE_DIR)
 print(__file__)
-from pathlib import Path
-
-print(Path(__file__).absolute())
-print(Path(__file__).absolute().parent.parent.parent)
