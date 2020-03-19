@@ -1,0 +1,3 @@
+include *.in
+include *.txt
+include LICENSE
