@@ -8,12 +8,9 @@ import torch
 
 __author__ = 'tianyu'
 import sys
-import os
-apd = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pathlib import Path
 
-print('add',apd)
-sys.path.append(apd)
-print(sys.path)
+sys.path.append(Path(__file__).absolute().parent.parent.parent)
 
 from torchfurnace import Engine, Parser
 from torchvision import datasets

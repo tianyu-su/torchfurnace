@@ -7,13 +7,11 @@ module description
 __author__ = 'tianyu'
 
 import sys
-import os
+from pathlib import Path
 
-apd = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-print('add',apd)
-sys.path.append(apd)
-print(sys.path)
-from torchfurnace import ImageLMDB, ImageFolderLMDB
+sys.path.append(Path(__file__).absolute().parent.parent.parent)
+
+# from torchfurnace import ImageLMDB, ImageFolderLMDB
 
 # import matplotlib.pyplot as plt
 #
@@ -24,5 +22,7 @@ from torchfurnace import ImageLMDB, ImageFolderLMDB
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print('hhh',BASE_DIR)
 print(__file__)
+from pathlib import Path
 
-
+print(Path(__file__).absolute())
+print(Path(__file__).absolute().parent.parent.parent)

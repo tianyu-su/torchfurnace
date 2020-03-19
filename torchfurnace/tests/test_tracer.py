@@ -7,13 +7,10 @@ module description
 __author__ = 'tianyu'
 
 import sys
-import os
+from pathlib import Path
 
-apd = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(Path(__file__).absolute().parent.parent.parent)
 
-print('add',apd)
-sys.path.append(apd)
-print(sys.path)
 from torchfurnace import Tracer
 
 from pathlib import Path
