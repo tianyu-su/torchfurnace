@@ -9,7 +9,10 @@ __author__ = 'tianyu'
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.getcwd())))
+apd = os.path.dirname(os.path.dirname(os.getcwd()))
+print('add',apd)
+sys.path.append(apd)
+print(sys.path)
 from torchfurnace import ImageLMDB, ImageFolderLMDB
 
 # import matplotlib.pyplot as plt

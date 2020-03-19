@@ -1,14 +1,19 @@
 language: python
 python:
-- '3.6'
+  - '3.6'
+
+os:
+  - 'linux'
+  - 'windows'
+
 dist: trusty
 cache: pip
 install:
-- pip install -r ./requirements.txt -q
+  - pip install -r ./requirements.txt -q
 script:
-- python torchfurnace/tests/test_furnace.py
-- python torchfurnace/tests/test_img2lmdb.py
-- python torchfurnace/tests/test_tracer.py
+  - python torchfurnace/tests/test_furnace.py
+  - python torchfurnace/tests/test_img2lmdb.py
+  - python torchfurnace/tests/test_tracer.py
 branches:
   only:
     - master
