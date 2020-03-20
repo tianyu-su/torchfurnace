@@ -2,11 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4173d18-a0df-48d1-82bb-a8191b59b59f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train.lmdb-lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/c001.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/c002.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/c003.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/d001.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/d002.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_imgs/d003.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/image2lmdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/image2lmdb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/cat/001.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/dog/001.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/cat/002.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/dog/002.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/cat/003.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/dog/003.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/dog/001.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/cat/001.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/dog/002.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/cat/002.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/tests/imgs/dog/003.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/demo_dataset/train/cat/003.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/torchfurnace/utils/decorator.py" beforeDir="false" afterPath="$PROJECT_DIR$/torchfurnace/utils/decorator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,10 +32,58 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/requirements.txt">
+        <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="-820">
+              <caret line="5" column="3" lean-forward="true" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+              <folding>
+                <element signature="e#91#101#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/torchfurnace/image2lmdb.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
+              <folding>
+                <element signature="e#101#110#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_tracer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="441">
+              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+              <folding>
+                <element signature="e#99#109#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/torchfurnace/tracer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+              <folding>
+                <element signature="e#329#339#0" expanded="true" />
+                <element signature="e#687#744#0" />
+                <element signature="e#793#1016#0" />
+                <element signature="e#1047#1221#0" />
+                <element signature="e#1263#1305#0" />
+                <element signature="e#1358#1424#0" />
+                <element signature="e#1460#1523#0" />
+                <element signature="e#1612#2499#0" />
+                <element signature="e#2541#2810#0" />
+                <element signature="e#2851#2941#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -28,8 +91,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_furnace.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
+            <state relative-caret-position="713">
+              <caret line="51" selection-start-line="51" selection-end-line="51" />
+              <folding>
+                <element signature="e#98#110#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -45,7 +111,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.last_epoch</find>
       <find>self.args.resume</find>
       <find>dtypes</find>
       <find>batch_size</find>
@@ -74,6 +139,7 @@
       <find>Environment</find>
       <find>class Environment</find>
       <find>data</find>
+      <find>byteflow</find>
       <find>tqdm</find>
     </findStrings>
     <replaceStrings>
@@ -98,22 +164,22 @@
         <option value="$PROJECT_DIR$/torchfurnace/utils/meter.py" />
         <option value="$PROJECT_DIR$/torchfurnace/utils/torch_summary.py" />
         <option value="$PROJECT_DIR$/torchfurnace/utils/tracer_component.py" />
-        <option value="$PROJECT_DIR$/torchfurnace/image2lmdb.py" />
         <option value="$PROJECT_DIR$/torchfurnace/tracer.py" />
         <option value="$PROJECT_DIR$/torchfurnace/engine.py" />
         <option value="$PROJECT_DIR$/torchfurnace/options.py" />
-        <option value="$PROJECT_DIR$/torchfurnace/utils/decorator.py" />
         <option value="$PROJECT_DIR$/torchfurnace/utils/function.py" />
         <option value="$PROJECT_DIR$/torchfurnace/__init__.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/MANIFEST.in" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/tmp.py" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/torchfurnace/image2lmdb.py" />
+        <option value="$PROJECT_DIR$/torchfurnace/utils/decorator.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/test_tracer.py" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/torchfurnace/tests/test_furnace.py" />
       </list>
     </option>
@@ -164,12 +230,13 @@
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace\torchfurnace\tests\train" />
       <recent name="E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace\torchfurnace\tests" />
       <recent name="E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace\torchfurnace\utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -328,12 +395,12 @@
       <workItem from="1584600392152" duration="12514000" />
       <workItem from="1584633561295" duration="5297000" />
       <workItem from="1584639259266" duration="6085000" />
-      <workItem from="1584684230857" duration="169000" />
+      <workItem from="1584684230857" duration="7218000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98176000" />
+    <option name="totallyTimeSpent" value="105225000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -348,13 +415,13 @@
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2304401" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14669926" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32922733" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32847533" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32174888" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39977604" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3026906" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32922733" />
@@ -362,12 +429,12 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3352018" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3352018" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32847533" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="SciView" order="3" weight="0.3294621" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -382,8 +449,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/torchfurnace/image2lmdb.py</url>
-          <line>125</line>
-          <option name="timeStamp" value="5" />
+          <line>113</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/torchfurnace/image2lmdb.py</url>
+          <line>180</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/torchfurnace/image2lmdb.py</url>
+          <line>158</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -399,8 +476,8 @@
     <SUITE FILE_PATH="coverage/torchfurnace$options.coverage" NAME="options Coverage Results" MODIFIED="1584429650174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace" />
     <SUITE FILE_PATH="coverage/torchfurnace$function.coverage" NAME="function Coverage Results" MODIFIED="1584455761606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace/utils" />
     <SUITE FILE_PATH="coverage/torchfurnace$tmp.coverage" NAME="tmp Coverage Results" MODIFIED="1584546255522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/torchfurnace$test_img2lmdb.coverage" NAME="test_img2lmdb Coverage Results" MODIFIED="1584642571692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace/tests" />
-    <SUITE FILE_PATH="coverage/torchfurnace$image2lmdb.coverage" NAME="image2lmdb Coverage Results" MODIFIED="1584629804334" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace" />
+    <SUITE FILE_PATH="coverage/torchfurnace$test_img2lmdb.coverage" NAME="test_img2lmdb Coverage Results" MODIFIED="1584689482027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace/tests" />
+    <SUITE FILE_PATH="coverage/torchfurnace$image2lmdb.coverage" NAME="image2lmdb Coverage Results" MODIFIED="1584686368872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace" />
     <SUITE FILE_PATH="coverage/torchfurnace$engine.coverage" NAME="engine Coverage Results" MODIFIED="1584430382806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/torchfurnace" />
     <SUITE FILE_PATH="coverage/torchfurnace$testcase.coverage" NAME="testcase Coverage Results" MODIFIED="1584430501902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/torchfurnace$test_furnace.coverage" NAME="test_furnace Coverage Results" MODIFIED="1584499759225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -409,6 +486,21 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>img.size</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>img.size()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>iter(data_loader)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>len(data)</expression-string>
         <language-id>Python</language-id>
@@ -427,21 +519,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/2and3/argparse.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="56" column="21" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/Anaconda3/envs/pytorchstove/Lib/site-packages/torchsummary/torchsummary.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1488431940/numpy/random/mtrand.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="2363" column="4" selection-start-line="2363" selection-start-column="4" selection-end-line="2363" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1488431940/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
@@ -554,25 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/tracer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" column="11" lean-forward="true" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding>
-            <element signature="e#639#744#0" />
-            <element signature="e#687#744#0" />
-            <element signature="e#793#1016#0" />
-            <element signature="e#1047#1221#0" />
-            <element signature="e#1263#1305#0" />
-            <element signature="e#1358#1424#0" />
-            <element signature="e#1460#1523#0" />
-            <element signature="e#1612#2499#0" />
-            <element signature="e#2541#2810#0" />
-            <element signature="e#2851#2941#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/utils/function.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -591,24 +649,6 @@
             <element signature="e#1321#1399#0" />
             <element signature="e#1437#1469#0" />
             <element signature="e#1512#1533#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/utils/decorator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding>
-            <element signature="e#98#114#0" expanded="true" />
-            <element signature="e#183#591#0" />
-            <element signature="e#248#571#0" />
-            <element signature="e#290#534#0" />
-            <element signature="e#323#534#0" />
-            <element signature="e#621#1027#0" />
-            <element signature="e#686#1007#0" />
-            <element signature="e#728#970#0" />
-            <element signature="e#761#970#0" />
           </folding>
         </state>
       </provider>
@@ -722,13 +762,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/tests/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -739,34 +772,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/engine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/tmp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/image2lmdb.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="143" column="6" selection-start-line="143" selection-start-column="6" selection-end-line="143" selection-end-column="6" />
-          <folding>
-            <element signature="e#101#110#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -787,44 +796,131 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+        <state relative-caret-position="189">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
+    <entry file="file://D:/Anaconda3/envs/pytorchstove/Lib/site-packages/torch/utils/data/_utils/fetch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+        <state relative-caret-position="692">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Anaconda3/envs/pytorchstove/Lib/site-packages/torch/utils/data/dataloader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="360" column="48" selection-start-line="360" selection-start-column="48" selection-end-line="360" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Anaconda3/envs/pytorchstove/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="311" selection-start-line="311" selection-end-line="311" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="10" lean-forward="true" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/tmp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-804">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/utils/decorator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
           <folding>
-            <element signature="e#98#108#0" expanded="true" />
+            <element signature="e#98#114#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/engine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="229" column="35" selection-start-line="229" selection-start-column="35" selection-end-line="229" selection-end-column="35" />
+          <folding>
+            <element signature="e#111#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/image2lmdb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+          <folding>
+            <element signature="e#101#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/torchfurnace/tracer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+          <folding>
+            <element signature="e#329#339#0" expanded="true" />
+            <element signature="e#687#744#0" />
+            <element signature="e#793#1016#0" />
+            <element signature="e#1047#1221#0" />
+            <element signature="e#1263#1305#0" />
+            <element signature="e#1358#1424#0" />
+            <element signature="e#1460#1523#0" />
+            <element signature="e#1612#2499#0" />
+            <element signature="e#2541#2810#0" />
+            <element signature="e#2851#2941#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_tracer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="20" column="15" lean-forward="true" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+        <state relative-caret-position="441">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
           <folding>
             <element signature="e#99#109#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_img2lmdb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="-820">
+          <caret line="5" column="3" lean-forward="true" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+          <folding>
+            <element signature="e#91#101#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/torchfurnace/tests/test_furnace.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
+        <state relative-caret-position="713">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
+          <folding>
+            <element signature="e#98#110#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

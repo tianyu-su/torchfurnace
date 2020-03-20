@@ -41,23 +41,25 @@ class ImageFolderLMDB(data.Dataset):
     """
 
     def __init__(self, db_path, transform=None, target_transform=None):
-        self.db_path = db_path
-        self.env = lmdb.open(db_path, subdir=osp.isdir(db_path),
-                             readonly=True, lock=False,
-                             readahead=False, meminit=False)
-        with self.env.begin(write=False) as txn:
+        self._db_path = db_path
+        self._env = lmdb.open(db_path, subdir=osp.isdir(db_path),
+                              readonly=True, lock=False,
+                              readahead=False, meminit=False)
+        with self._env.begin(write=False) as txn:
             # self.length = txn.stat()['entries'] - 1
-            self.length = pa.deserialize(txn.get(b'__len__'))
-            self.keys = pa.deserialize(txn.get(b'__keys__'))
+            self._length = pa.deserialize(txn.get(b'__len__'))
+            self._keys = pa.deserialize(txn.get(b'__keys__'))
 
-        self.transform = transform
-        self.target_transform = target_transform
+        self._transform = transform
+        self._target_transform = target_transform
 
     def __getitem__(self, index):
         img, target = None, None
-        env = self.env
+        env = self._env
         with env.begin(write=False) as txn:
-            byteflow = txn.get(self.keys[index])
+            byteflow = txn.get(self._keys[index])
+            if byteflow is None:
+                raise Exception(f'Key Error -> {self._keys[index]}')
         unpacked = pa.deserialize(byteflow)
 
         # load image
@@ -70,19 +72,19 @@ class ImageFolderLMDB(data.Dataset):
         # load label
         target = unpacked[1]
 
-        if self.transform is not None:
-            img = self.transform(img)
+        if self._transform is not None:
+            img = self._transform(img)
 
-        if self.target_transform is not None:
-            target = self.target_transform(target)
+        if self._target_transform is not None:
+            target = self._target_transform(target)
 
         return img, target
 
     def __len__(self):
-        return self.length
+        return self._length
 
     def __repr__(self):
-        return self.__class__.__name__ + ' (' + self.db_path + ')'
+        return self.__class__.__name__ + ' (' + self._db_path + ')'
 
     @staticmethod
     def folder2lmdb(dpath, name="train", write_frequency=5000, num_workers=16, lmdb_size=20480000):
@@ -102,6 +104,7 @@ class ImageFolderLMDB(data.Dataset):
 
         :param name: train or val
         :param lmdb_size: the size of lmdb (Byte)
+        :return mapping of class name and class_no
         """
         directory = osp.expanduser(osp.join(dpath, name))
         print("Loading dataset from %s" % directory)
@@ -118,7 +121,7 @@ class ImageFolderLMDB(data.Dataset):
                        map_size=lmdb_size, readonly=False,
                        meminit=False, map_async=True)
 
-        print(len(dataset), len(data_loader))
+        # print(len(dataset), len(data_loader))
         txn = db.begin(write=True)
         for idx, data in enumerate(data_loader):
             # print(type(data), data)
@@ -136,10 +139,10 @@ class ImageFolderLMDB(data.Dataset):
             txn.put(b'__keys__', dumps_pyarrow(keys))
             txn.put(b'__len__', dumps_pyarrow(len(keys)))
 
-        print("Flushing database ...")
+        print(f"Flushing database '{lmdb_path}'")
         db.sync()
         db.close()
-
+        return dataset.class_to_idx
 
 class ImageLMDB(object):
 
@@ -148,7 +151,7 @@ class ImageLMDB(object):
         """ you can override it for your requirements.
         For example, you want to store over one flow images,
         and you can put each list of flow picture path,into data_mapping['pic_path],
-        for instance, data_mapping['pic_path].append(['flow1.jpg','flow2.jpg'])
+        for instance, data_mapping['pic_path].append(['flow1.jpg','flow2.jpg']) and update __getitem__[1] as list
         """
 
         class InnerDataset(data.Dataset):
@@ -176,17 +179,16 @@ class ImageLMDB(object):
         :return:
         """
         data_loader = DataLoader(ImageLMDB._dataset4store(data_mapping), num_workers=num_workers, collate_fn=lambda x: x)
-        data_loader = tqdm(data_loader, desc='Processing')
         print(f"Generate LMDB to {dpath}")
         db = lmdb.open(dpath, map_size=lmdb_size, readonly=False,
                        meminit=False, map_async=True)
         print(f"total sample: {len(data_loader):,}")
         txn = db.begin(write=True)
-        for idx, data in enumerate(data_loader):
+        for idx, data in enumerate(tqdm(data_loader, desc='Processing')):
             key, image = data[0]
             txn.put(u'{}'.format(key).encode('ascii'), dumps_pyarrow(image))
             if idx % write_frequency == 0:
-                print("[%d/%d]" % (idx, len(data_loader)))
+                # print("[%d/%d]" % (idx, len(data_loader)))
                 txn.commit()
                 txn = db.begin(write=True)
 
@@ -195,7 +197,7 @@ class ImageLMDB(object):
         with db.begin(write=True) as txn:
             txn.put(b'__len__', dumps_pyarrow(len(data_loader)))
 
-        print("Flushing database ...")
+        print(f"Flushing database in '{dpath}'")
         db.sync()
         db.close()
 
@@ -226,6 +228,8 @@ class ImageLMDB(object):
                         readahead=False, meminit=False)
         with env.begin(write=False) as txn:
             byteflow = txn.get(u'{}'.format(key).encode('ascii'))
+            if byteflow is None:
+                raise Exception(f'Key Error -> {key}')
         unpacked = pa.deserialize(byteflow)
 
         return ImageLMDB._post4store(unpacked)

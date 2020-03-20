@@ -4,14 +4,15 @@
 """
 module description
 """
+__author__ = 'tianyu'
 import torch
 
-__author__ = 'tianyu'
 import sys
 from pathlib import Path
 
 print('add path:', str(Path(__file__).absolute().parent.parent.parent))
 sys.path.append(str(Path(__file__).absolute().parent.parent.parent))
+print(f'Testing {Path(__file__)}')
 
 from torchfurnace import Engine, Parser
 from torchvision import datasets
@@ -48,9 +49,3 @@ experiment_name = '_'.join([args.dataset, ])
 #
 # optimizer = torch.optim.Adam(model.parameters())
 # eng.learning(model, optimizer, train_ds, val_ds)
-print(__file__)
-print('cuda:',torch.cuda.is_available())
-
-if torch.cuda.is_available():
-    hh=torch.rand(800,999).cuda()
-    print(hh.device)
