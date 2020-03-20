@@ -72,9 +72,7 @@ class Config(object):
         return self.content
 
     def save(self, path: Path):
-        with path.open('w', encoding='uft-8') as f:
-            f.write(str(self.content))
-
+        path.open('w', encoding='utf-8').write(str(self.content))
 
 class Model(object):
     def __init__(self, name, state, is_best=False):
@@ -92,8 +90,7 @@ class Model(object):
 
     def save(self, pre_ckp_path: Path, arch_path: Path):
         # save network architecture
-        with arch_path.open('w', encoding='utf-8') as f:
-            f.write(self._state['arch'])
+        arch_path.open('w', encoding='utf-8').write(self._state['arch'])
 
         # save checkpoint
         torch.save(self._state, pre_ckp_path / self._name)

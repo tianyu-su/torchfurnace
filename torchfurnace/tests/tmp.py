@@ -71,35 +71,6 @@ a = Net()
 # msg_key = list(map(lambda x: x[4:], filter(lambda att: str(att).startswith('add_'), dir(SummaryWriter))))
 # print(msg_key)
 
+from pathlib import Path
 
-class A():
-    override = ['gg']
-
-    def __setattr__(self, key, value):
-        if key in self.override:
-            self.__dict__[key] = value
-        else:
-            raise AttributeError("Don't override")
-
-    def hh(self):
-        print('hh')
-
-    def gg(self):
-        print('gg')
-
-
-class B(A):
-    def xx(self):
-        print('xx')
-
-    def hh(self):
-        print('son hh')
-
-    def gg(self):
-        print('sone gg')
-
-
-b = B()
-a=A()
-a.cc='sss'
-b.hh(),b.xx(),b.gg()
+# Path('hh.txt').open('w',encoding='utf-8').write('worrrr')

@@ -23,7 +23,7 @@ class Tracer(object):
     ARCH_NAME = 'architecture'
 
     def __init__(self, root_dir=Path('.'), work_name='network'):
-        self._tb = SummaryWriter()
+        self._tb_switch = True
         self._dirs = {
             'work_name': root_dir / work_name
         }
@@ -55,14 +55,20 @@ class Tracer(object):
         return time.strftime('%m%d_%H-%M-%S', time.localtime(time.time()))
 
     def _build_dir(self):
-        for d in self._dirs.values():
-            d.mkdir(parents=True)
+        for k, d in self._dirs.items():
+            if k == 'experiment_name': continue
+            if not d.exists(): d.mkdir(parents=True)
+
+    def tb_switch(self, status):
+        self._tb_switch = status
+        return self
 
     def attach(self, experiment_name='exp', logger_name='log', override=True):
         if not override:
             experiment_name += f"_{Tracer._get_now_time()}"
         self._dirs['experiment_name'] = experiment_name
-        self._dirs['tensorboard'] = self._dirs['work_name'] / 'tensorboard' / f"{self._dirs['experiment_name']}_{Tracer._get_now_time()}"
+        if self._tb_switch:
+            self._dirs['tensorboard'] = self._dirs['work_name'] / 'tensorboard' / f"{self._dirs['experiment_name']}_{Tracer._get_now_time()}"
         self._dirs['models'] = self._dirs['work_name'] / 'models' / self._dirs['experiment_name']
         self._dirs['checkpoint_best'] = self._dirs['models'] / 'checkpoint' / 'best'
         self._dirs['logs'] = self._dirs['work_name'] / 'logs' / self._dirs['experiment_name']
@@ -70,11 +76,12 @@ class Tracer(object):
         self._build_dir()
 
         # edit tensorboard log_dir
-        self._tb.log_dir = self._dirs['tensorboard']
+        if self._tb_switch:
+            self._tb = SummaryWriter(log_dir=self._dirs['tensorboard'])
 
         # new log file
         logger_name = self._dirs['logs'] / logger_name
-        if logger_name.exists(): logger_name = logger_name / '_' / self._get_now_time()
+        if logger_name.exists(): logger_name = f'{logger_name}_{self._get_now_time()}'
         self._start_log(logger_name)
         return self
 
@@ -86,4 +93,4 @@ class Tracer(object):
 
     def load(self, component):
         if isinstance(component, Model):
-            component.load(self._dirs['checkpoint_best'])
+            return component.load(self._dirs['checkpoint_best'])

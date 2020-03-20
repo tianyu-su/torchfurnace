@@ -81,6 +81,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._do_args()
 
         self._tracer = Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name) \
+            .tb_switch(self._args.no_tb) \
             .attach(experiment_name=self._experiment_name, override=self._args.override_exp,
                     logger_name=self._args.logger_name)
 
