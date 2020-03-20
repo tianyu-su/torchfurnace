@@ -11,9 +11,10 @@ install:
   - pip install -r ./requirements.txt -q
   - pip install matplotlib
 script:
-  - python torchfurnace/tests/test_furnace.py
-  - python torchfurnace/tests/test_img2lmdb.py
-  - python torchfurnace/tests/test_tracer.py
+  - cd torchfurnace/tests
+  - python test_furnace.py
+  - python test_img2lmdb.py
+  - python test_tracer.py
 branches:
   only:
     - master
