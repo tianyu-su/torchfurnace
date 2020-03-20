@@ -24,6 +24,7 @@ class Tracer(object):
 
     def __init__(self, root_dir=Path('.'), work_name='network'):
         self._tb_switch = True
+        self._debug_switch = False
         self._dirs = {
             'work_name': root_dir / work_name
         }
@@ -38,12 +39,12 @@ class Tracer(object):
 
     def close(self):
         # close I/O
-        self._tb.close()
-        self._log.close()
-
-        # recovery stdout stderr to system
-        sys.stderr = self._stderr
-        sys.stdout = self._stdout
+        if self._tb_switch: self._tb.close()
+        if not self._debug_switch:
+            self._log.close()
+            # recovery stdout stderr to system
+            sys.stderr = self._stderr
+            sys.stdout = self._stdout
 
     @property
     def tb(self):
@@ -61,6 +62,10 @@ class Tracer(object):
 
     def tb_switch(self, status):
         self._tb_switch = status
+        return self
+
+    def debug_switch(self, status):
+        self._debug_switch = status
         return self
 
     def attach(self, experiment_name='exp', logger_name='log', override=True):
@@ -82,7 +87,8 @@ class Tracer(object):
         # new log file
         logger_name = self._dirs['logs'] / logger_name
         if logger_name.exists(): logger_name = f'{logger_name}_{self._get_now_time()}'
-        self._start_log(logger_name)
+
+        if not self._debug_switch: self._start_log(logger_name)
         return self
 
     def store(self, component):
@@ -93,4 +99,4 @@ class Tracer(object):
 
     def load(self, component):
         if isinstance(component, Model):
-            return component.load(self._dirs['checkpoint_best'])
+            return component.load(self._dirs['work_name'] / 'models')

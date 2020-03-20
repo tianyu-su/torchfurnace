@@ -74,17 +74,20 @@ class Config(object):
     def save(self, path: Path):
         path.open('w', encoding='utf-8').write(str(self.content))
 
+
 class Model(object):
+
     def __init__(self, name, state, is_best=False):
         """
         usage
-        :param name: Only name DONT add suffix
+        :param name: name if save mode
+                     experiment_name/file_name*_best.pth.tar if load mode
         :param state:
                 save func: key: 'epoch' 'state_dict' 'best_acc1' 'optimizer' 'arch'
                 load func: key: 'model' 'optim'
         :param is_best:
         """
-        self._name = f"{name}.pth.tar"
+        self._name = f"{name}"
         self._state = state
         self._is_best = is_best
 
@@ -98,7 +101,9 @@ class Model(object):
             shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / self._name.replace('.pth.tar', '_best.pth.tar'))
 
     def load(self, pre_path: Path) -> dict:
-        file_path = pre_path / self._name.replace('.pth.tar', '_best.pth.tar')
+        # pre_path: located in work_name/models
+        exp_name, file_name = self._name.split('/')
+        file_path = pre_path / exp_name / 'checkpoint' / 'best' / file_name
         ret = {'start_epoch': -1, 'best_acc1': -1}
         if file_path.is_file():
             log("=> loading checkpoint '{}'".format(file_path))

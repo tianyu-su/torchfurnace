@@ -133,3 +133,12 @@ def summary_string(model, input_size, batch_size=-1, dtypes=None):
     summary_str += "----------------------------------------------------------------" + "\n"
     # return summary
     return summary_str, (total_params, trainable_params)
+
+
+if __name__=='__main__':
+    from torchvision import models
+
+    vgg = models.vgg16()
+    summary(vgg, (3, 224, 224))
+    # summary(vgg, [(1, 16, 16), (1, 28, 28)])
+    pass

@@ -64,17 +64,17 @@ class Engine(object, metaclass=abc.ABCMeta):
                           'You may see unexpected behavior when restarting '
                           'from checkpoints.')
         if self._args.debug:
-            self._args.j = 0
-            self._args.bs = 2
+            self._args.workers = 0
+            self._args.batch_size = 2
 
         if torch.cuda.is_available():
             import os
             os.environ["CUDA_VISIBLE_DEVICES"] = self._args.gpu
             torch.backends.cudnn.benchmark = True
 
-    def _warp_loader(self, dataset):
+    def _warp_loader(self, training, dataset):
         return torch.utils.data.DataLoader(dataset, batch_size=self._args.batch_size, num_workers=self._args.workers,
-                                           pin_memory=True, shuffle=not self._args.evaluate)
+                                           pin_memory=True, shuffle=training)
 
     def _init_learning(self):
         self._args = self._parser.parse_args()
@@ -82,12 +82,14 @@ class Engine(object, metaclass=abc.ABCMeta):
 
         self._tracer = Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name) \
             .tb_switch(self._args.no_tb) \
+            .debug_switch(self._args.debug) \
             .attach(experiment_name=self._experiment_name, override=self._args.override_exp,
                     logger_name=self._args.logger_name)
 
     def _resume(self, model, optimizer):
         """load more than one model and optimizer, for example GAN"""
-        for pth, m, optim in zip(self._args.resume, list(model), list(optimizer)):
+        for pth, m, optim in zip(self._args.resume, [model] if not isinstance(model, list) else model,
+                                 [optimizer] if not isinstance(optimizer, list) else optimizer):
             ret = self._tracer.load(tc.Model(
                 pth, {
                     'model': m,
@@ -99,7 +101,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
     @staticmethod
     def _get_lr_scheduler(optimizer: object) -> list:
-        return [StepLR(optim, 30, gamma=0.1) for optim in list(optimizer)]
+        return [StepLR(optim, 30, gamma=0.1) for optim in ([optimizer] if not isinstance(optimizer, list) else optimizer)]
 
     @staticmethod
     def _on_start_epoch():
@@ -108,9 +110,12 @@ class Engine(object, metaclass=abc.ABCMeta):
 
     def _on_end_epoch(self, model, optimizer, is_best):
         """save more than one model and optimizer, for example GAN"""
-        for m, optim in zip(list(model), list(optimizer)):
+        postfix = f'_{self._args.extension}'
+        if self._args.extension == '': postfix = ''
+        for m, optim in zip([model] if not isinstance(model, list) else model,
+                            [optimizer] if not isinstance(optimizer, list) else optimizer):
             self._tracer.store(tc.Model(
-                f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']}_{self._args.extension}",
+                f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']:.2f}{postfix}.pth.tar",
                 {
                     'epoch': self._state['epoch'] + 1,
                     'arch': str(m),
@@ -150,7 +155,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                           'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
                           'Acc@5 {top5.val:.3f} ({top5.avg:.3f}) '.format(
                     self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters[mode].batch_time,
-                    data_time=self._meters[mode].sdata_time, loss=self._meters[mode].losses,
+                    data_time=self._meters[mode].data_time, loss=self._meters[mode].losses,
                     top1=self._meters[mode].top1, top5=self._meters[mode].top5)
                 log(fix_log + self._add_on_end_batch_log(True))
                 if self._args.no_tb:
@@ -158,7 +163,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                         'training': self._meters[mode].losses.avg,
                     }, training_iterations)
                     self._tracer.tb.add_scalar('data/epochs', self._state['epoch'], training_iterations)
-                    for oi, optim in enumerate(list(optimizer)):
+                    for oi, optim in enumerate([optimizer] if not isinstance(optimizer, list) else optimizer):
                         self._tracer.tb.add_scalars(f'data/learning_rate', {f'lr_optim_{oi + 1}': optim.param_groups[-1]['lr']}, training_iterations)
                     self._tracer.tb.add_scalars('data/precision/top1', {
                         'training': self._meters[mode].top1.avg,
@@ -253,7 +258,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._meters[mode].batch_time.update(time.time() - end)
             end = time.time()
 
-            self._on_end_batch(False, train_loader)
+            self._on_end_batch(True, train_loader, optimizer)
 
     @val_wrapper
     def _validate(self, model, val_loader):
@@ -267,14 +272,11 @@ class Engine(object, metaclass=abc.ABCMeta):
         with torch.no_grad():
             for i, batch in enumerate(train_loader):
                 self._state['iteration'] = i
-                # measure data loading time
-                self._meters[mode].data_time.update(time.time() - end)
 
                 inp, target = self._on_start_batch(batch)
 
                 # compute output
                 ret = self._on_forward(False, model, inp, target)
-
                 # compute acc1 acc5
                 acc1, acc5 = accuracy(ret['preds'], target, topk=(1, 5))
                 self._meters[mode].losses.update(ret['loss'].item(), inp.size(0))
@@ -286,6 +288,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                 end = time.time()
 
             self._on_end_batch(False, train_loader)
+        return self._meters[mode].top1.avg
 
     def learning(self, model, optimizer, train_dataset, val_dataset):
         """
@@ -298,11 +301,11 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._init_learning()
 
         # save config
-        cfg = {f"optimizer{i + 1}": optim for i, optim in enumerate(list(optimizer))}
+        cfg = {f"optimizer{i + 1}": optim for i, optim in enumerate([optimizer] if not isinstance(optimizer, list) else optimizer)}
         self._tracer.store(tc.Config({**cfg, **vars(self._args)}))
 
-        train_loader = self._warp_loader(train_dataset)
-        val_loader = self._warp_loader(val_dataset)
+        train_loader = self._warp_loader(True, train_dataset)
+        val_loader = self._warp_loader(False, val_dataset)
 
         if self._args.resume:
             self._resume(model, optimizer)
@@ -313,7 +316,6 @@ class Engine(object, metaclass=abc.ABCMeta):
             ajlr = None
             if self._args.adjust_lr:
                 ajlr = self._get_lr_scheduler(optimizer)
-            log('==> start ...')
             for epoch in range(self._args.start_epoch, self._args.epochs):
 
                 # train for one epoch

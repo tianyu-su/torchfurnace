@@ -24,7 +24,7 @@ from torchfurnace import Parser
 from torchfurnace.utils.decorator import test_function
 
 tracer = Tracer(Path(r'.'), 'mine_network').tb_switch(True).attach('expn')
-model = models.alexnet(pretrained=False)
+model = models.vgg11(pretrained=False)
 optimizer = torch.optim.Adam(model.parameters())
 
 
@@ -40,7 +40,7 @@ def test_config():
 def test_store_model():
     global tracer, model, optimizer
     tracer.store(tc.Model(
-        f"{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo",
+        f"{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo.pth.tar",
         {
             'epoch': 99,
             'arch': str(model),
@@ -53,7 +53,7 @@ def test_store_model():
 @test_function
 def test_load_model():
     global tracer, model, optimizer
-    pth = f"{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo"
+    pth = f"expn/{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo_best.pth.tar"
     ret = tracer.load(tc.Model(
         pth, {
             'model': model,
@@ -71,10 +71,10 @@ def test_tensorboard():
 
 
 if __name__ == '__main__':
-    # test_config()
+    test_config()
 
-    # test_store_model()
-    # test_load_model()
+    test_store_model()
+    test_load_model()
 
     test_tensorboard()
 

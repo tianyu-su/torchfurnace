@@ -15,6 +15,7 @@ script:
   - python test_furnace.py
   - python test_img2lmdb.py
   - python test_tracer.py
+  - cat mine_network/logs/expn/log
 branches:
   only:
     - master
