@@ -28,7 +28,7 @@ from torchfurnace.utils.decorator import test_function
 parser = Parser('TVGG16')
 args = parser.parse_args()
 args.dataset = 'CIFAR10'
-experiment_name = '_'.join([args.dataset, ])
+experiment_name = '_'.join([args.dataset, args.exp_suffix])
 
 
 class VGGNetEngine(Engine):
@@ -52,7 +52,7 @@ class VGGNetEngine(Engine):
 
     @staticmethod
     def _get_lr_scheduler(optimizer: object) -> list:
-        return [MultiStepLR(optim, milestones=[150,250,350], gamma=0.1) for optim in ([optimizer] if not isinstance(optimizer, list) else optimizer)]
+        return [MultiStepLR(optim, milestones=[150, 250, 350], gamma=0.1) for optim in ([optimizer] if not isinstance(optimizer, list) else optimizer)]
 
 
 cfg = {
@@ -111,6 +111,8 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 model = VGG('VGG16')
 optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
+# optimizer = torch.optim.Adam(model.parameters(), lr=0.1, weight_decay=5e-4)
+
 
 
 @test_function
