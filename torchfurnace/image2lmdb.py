@@ -170,7 +170,7 @@ class ImageLMDB(object):
     @staticmethod
     def store(data_mapping, dpath, lmdb_size, num_workers=16, write_frequency=5000):
         """
-        store each pictures in the `dada_mapping` with small size to LMDB
+        store each picture with small size in the `dada_mapping` to LMDB
         :param data_mapping: {'key':[],'pic_path':[]}
         :param dpath: direcotry path path to save lmdb file
         :param lmdb_size: approximate space
@@ -233,18 +233,3 @@ class ImageLMDB(object):
         unpacked = pa.deserialize(byteflow)
 
         return ImageLMDB._post4store(unpacked)
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--folder", type=str)
-    parser.add_argument('-s', '--split', type=str, default="")
-    parser.add_argument('--out', type=str, default=".")
-    parser.add_argument('-p', '--procs', type=int, default=0)
-
-    args = parser.parse_args()
-    args.folder = r'E:\OneDrive - stu.ouc.edu.cn\ToolChains\torchfurnace\torchfurnace\tests\imgs'
-
-    ImageFolderLMDB.folder2lmdb(args.folder, num_workers=args.procs, name=args.split)

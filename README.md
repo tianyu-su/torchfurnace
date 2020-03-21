@@ -5,6 +5,6 @@
 
  
 
-#TODO
-- [ ] 多卡训练 `DistributedDataParallel`
+# TODO
+- [ ] training by `DistributedDataParallel`
 

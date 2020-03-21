@@ -27,7 +27,7 @@ from .utils.function import *
 
 class Engine(object, metaclass=abc.ABCMeta):
     """
-    Suggest Override Function:
+    Suggest Overriding Function:
     _on_start_epoch:           add some your meters for learning
     _get_lr_scheduler:         define your lr scheduler, default StepLR(step=30,gamma=0.1)
     _on_start_batch:           define how to read your dataset to return input,target as well as put on right device
