@@ -12,9 +12,9 @@ script:
   - python test_tracer.py
   - echo 'log of test_tracer.py '
   - cat mine_network/logs/expn/log
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
 before_deploy: echo 'deploy to pypi ...'
 deploy:
   provider: pypi
