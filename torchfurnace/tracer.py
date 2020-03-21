@@ -83,6 +83,7 @@ class Tracer(object):
         # edit tensorboard log_dir
         if self._tb_switch:
             self._tb = SummaryWriter(log_dir=self._dirs['tensorboard'])
+            print(f"Start Tensorboard ... [tensorboard --port=6006 --logdir {self._dirs['tensorboard']}]")
 
         # new log file
         logger_name = self._dirs['logs'] / logger_name

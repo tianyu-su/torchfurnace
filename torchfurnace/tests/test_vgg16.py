@@ -18,7 +18,6 @@ print(f'Testing {Path(__file__)}')
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
 from torchfurnace import Engine, Parser
@@ -85,6 +84,7 @@ class VGG(nn.Module):
         layers += [nn.AvgPool2d(kernel_size=1, stride=1)]
         return nn.Sequential(*layers)
 
+
 # Data
 print('==> Preparing data..')
 transform_train = transforms.Compose([
@@ -107,13 +107,13 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 model = VGG('VGG16')
 optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
 
+
 @test_function
 def test_precision():
+    import sys
     global experiment_name
     eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    eng._args.batch_size = 128
-    eng._args.workers = 2
-    eng._args.epochs = 200
+    sys.argv.extend('-bs 128 -j 2  --epochs 200')
     acc1 = eng.learning(model, optimizer, trainset, testset)
     print('Acc1:', acc1)
 
