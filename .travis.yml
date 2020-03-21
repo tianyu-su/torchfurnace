@@ -22,12 +22,12 @@ before_deploy:
   - echo 'deploy to pypi ...'
 deploy:
   provider: pypi
-  user: "__token__"
-  password:
-    secure: Qcq6WAj2/F/vrpUZZbOAv58KaaaeF/Uz33yVfPEQ115/t5y0D9ReNTo9B0cTXv5D06BM4989Kc75QLLQsAr/o352Ov0DkE2LKcnSHOSPFB7rTXfiBbjQsGJ1hWS1JAhraGhXIvYcLYIlE3w3oiUX6O4dsH2Bu4oIOjCYSK7/IjfEK4jYxis/JczbSsl2VFTzYTYWr2dyk/ls85syBnAAEElaR8KGBhqhW9iI2lwQKi7I+tQ8Tr5X617QG9RRS89FxgK25RswNVBvr/scNBjfPo6MoO7iJlK2Gl1mGqXHnwA7thmC9vLDsHrfHE0j+m0e5JNPs3ql6TRz10i6uYFNTW3RhBhcoOxMbS+Q/IzMDGqOERxDWdRpV9E07+y5g7rlvJ3CCtj3Nd2tdkjWtBqhIbyE24wtqG7pI55NOjY1AjRWfgOcriSoAbnPYaz/FpWNL3fyRg/4nt1DfxFzy7Glrdqd1ZoQ8lj+uZW+dFDhoCNKm9XiWmWnSmcwj6+ey/4/RYgr1paciqx+HLZpuN9ogyFBJHFCucuqvdF7xjhk6WCM+sY3FkAlqP4tn37O7AFQEBkcS2flB2eF5fMylj0Cz/xl/1XtXfRhjzsR1WUNQAQrA4G1JfunuYX6U1zFcHscfCylzlEaknZDqME/XI9PXOwlhV75v5gpKuIbxOVlkrg=
+  username: "__token__"
+  password: $pypi_token
+#    secure: Qcq6WAj2/F/vrpUZZbOAv58KaaaeF/Uz33yVfPEQ115/t5y0D9ReNTo9B0cTXv5D06BM4989Kc75QLLQsAr/o352Ov0DkE2LKcnSHOSPFB7rTXfiBbjQsGJ1hWS1JAhraGhXIvYcLYIlE3w3oiUX6O4dsH2Bu4oIOjCYSK7/IjfEK4jYxis/JczbSsl2VFTzYTYWr2dyk/ls85syBnAAEElaR8KGBhqhW9iI2lwQKi7I+tQ8Tr5X617QG9RRS89FxgK25RswNVBvr/scNBjfPo6MoO7iJlK2Gl1mGqXHnwA7thmC9vLDsHrfHE0j+m0e5JNPs3ql6TRz10i6uYFNTW3RhBhcoOxMbS+Q/IzMDGqOERxDWdRpV9E07+y5g7rlvJ3CCtj3Nd2tdkjWtBqhIbyE24wtqG7pI55NOjY1AjRWfgOcriSoAbnPYaz/FpWNL3fyRg/4nt1DfxFzy7Glrdqd1ZoQ8lj+uZW+dFDhoCNKm9XiWmWnSmcwj6+ey/4/RYgr1paciqx+HLZpuN9ogyFBJHFCucuqvdF7xjhk6WCM+sY3FkAlqP4tn37O7AFQEBkcS2flB2eF5fMylj0Cz/xl/1XtXfRhjzsR1WUNQAQrA4G1JfunuYX6U1zFcHscfCylzlEaknZDqME/XI9PXOwlhV75v5gpKuIbxOVlkrg=
   skip_existing: true
   distributions: "sdist bdist_wheel"
-  skip_cleanup: true
+  cleanup: true
   on:
     tags: true
 after_deploy:
