@@ -266,7 +266,8 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters[mode].merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())
 
-        train_loader = tqdm(val_loader, desc='Validation')
+        if self._args.p_bar:
+            train_loader = tqdm(val_loader, desc='Validation')
         end = time.time()
 
         with torch.no_grad():

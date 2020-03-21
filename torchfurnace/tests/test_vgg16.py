@@ -16,6 +16,7 @@ sys.path.append(str(Path(__file__).absolute().parent.parent.parent))
 print(f'Testing {Path(__file__)}')
 
 import torch
+from torch.optim.lr_scheduler import MultiStepLR
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
@@ -48,6 +49,10 @@ class VGGNetEngine(Engine):
         ret['preds'] = output
 
         return ret
+
+    @staticmethod
+    def _get_lr_scheduler(optimizer: object) -> list:
+        return [MultiStepLR(optim, milestones=[150,250,350], gamma=0.1) for optim in ([optimizer] if not isinstance(optimizer, list) else optimizer)]
 
 
 cfg = {
@@ -113,7 +118,7 @@ def test_precision():
     import sys
     global experiment_name
     eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    sys.argv.extend('-bs 128 -j 2  --epochs 200'.split())
+    sys.argv.extend('-lr 0.1 -mmt 0.9 -wd 5e-4 -bs 128 -j 2  --epochs 400 --adjust_lr'.split())
     acc1 = eng.learning(model, optimizer, trainset, testset)
     print('Acc1:', acc1)
 

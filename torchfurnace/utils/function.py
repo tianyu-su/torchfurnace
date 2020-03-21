@@ -36,6 +36,7 @@ def accuracy(output, target, topk=(1,)):
             res.append(correct_k.mul_(100.0 / batch_size))
         return tuple(res)
 
+
 def load_pretrained(model, pth):
     if os.path.isfile(pth):
         checkpoint = torch.load(pth)
@@ -50,7 +51,7 @@ def log(msg, green=False):
     if green:
         print('\033[92m', end="")
     print(msg)
-    print('\033[0m')
+    print('\033[0m', end="")
 
 
 class Chain(object):
@@ -67,26 +68,3 @@ class Chain(object):
 
     def __getattr__(self, item):
         return self.var[item]
-
-# def save_checkpoint(save_pth: Path(), state, best):
-#     torch.save(state, save_pth)
-#     if best:
-#         shutil.copyfile(save_pth, os.path.join(save_pth.parent, 'best', save_pth.name.replace('.pth.tar', '_best.pth.tar')))
-#
-
-# def load_checkpoint(weights_pth, state):
-#     ret = {'start_epoch': -1, 'best_acc1': -1}
-#
-#     if os.path.isfile(weights_pth):
-#         log("=> loading checkpoint '{}'".format(weights_pth))
-#         checkpoint = torch.load(weights_pth)
-#         ret['start_epoch'] = checkpoint['epoch']
-#         ret['best_acc1'] = checkpoint['best_acc1']
-#         state['model'].load_state_dict(checkpoint['state_dict'])
-#         state['optim'].load_state_dict(checkpoint['optimizer'])
-#         log("=> loaded checkpoint '{}' (epoch {} Acc@1 {})"
-#             .format(weights_pth, checkpoint['epoch'], checkpoint['best_acc1']))
-#     else:
-#         assert False, "=> no checkpoint found at '{}'".format(weights_pth)
-#
-#     return ret
