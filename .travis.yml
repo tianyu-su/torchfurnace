@@ -14,6 +14,7 @@ script:
   - python test_furnace.py
   - python test_img2lmdb.py
   - python test_tracer.py
+  - echo 'log of test_tracer.py '
   - cat mine_network/logs/expn/log
 branches:
   only:
@@ -21,8 +22,7 @@ branches:
 
 deploy:
   provider: pypi
-  user: baidayu
-  password:
-    secure: Rs4YYsVlkJsBDAtZLcjfWzdrSTm4Mf1OT/fhbtTtnFKesT1+p5uubW603IOMDidGWXnzWpYGPQBcROsg6FDn5vQYcXhJhY0yJnaP+czW3oLkPNdc1c3IFXzSvQv4sXUL08NwM7Lc3IYC8b1YJmNdRASyirONx99AzhWV5ql5y3UWBkbGlmwhH1aBVEMguAoZ9OBKFxSndPQJByBfzJLkJImwPDVB/tNEj7+tZuwuf/Q7zcG5Va+rNkXNkssuizO7X9cT1W6Hhjkt1By4TWStZOJfXCA5Y26w1kxOgFMIu6h29DNjgERTh8Cr9lTLjtGYLlHBIIfyRz2ze8I/fdyI/ksUhTaPzkDSDpJLJ9CSPwoo4RlK4s/3jgMK8Yb+RZ4SoqPlAU/cF8G4f8Oy4bk2tvBs9E0Fpisfo/U1+D30BQxGxnS8Hd/i96BrEi3jMCaPlHBTAFi43xSh3dbJV/Xbzgzk2JzDv+mg8qnur/FoprL4KYXJjC7w0pYK6RdMizlkNmao/h7469VhzfLLuJNeU7w5ooYkTAVTD/U43SJxzWU3UnuLvu7UHNdJ8+pvvLo2zl0MqjZWui+OTNJ3ReKEJE7yIyekc3fycUUhka7IT223dGWzQhIDEV7ysDqEySQLOzdLCdRtPyKK30gBh+OlJUe6DqdT0qtavA7Ohi8kYlM=
-  true:
+  user: "__token__"
+  password: $pypi_token
+  on:
     tags: true
