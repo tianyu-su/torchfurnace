@@ -267,11 +267,11 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters[mode].merge(self._on_start_epoch())
 
         if self._args.p_bar:
-            train_loader = tqdm(val_loader, desc='Validation')
+            val_loader = tqdm(val_loader, desc='Validation')
         end = time.time()
 
         with torch.no_grad():
-            for i, batch in enumerate(train_loader):
+            for i, batch in enumerate(val_loader):
                 self._state['iteration'] = i
 
                 inp, target = self._on_start_batch(batch)
@@ -288,7 +288,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                 self._meters[mode].batch_time.update(time.time() - end)
                 end = time.time()
 
-            self._on_end_batch(False, train_loader)
+            self._on_end_batch(False, val_loader)
         return self._meters[mode].top1.avg
 
     def learning(self, model, optimizer, train_dataset, val_dataset):
