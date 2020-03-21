@@ -113,7 +113,7 @@ def test_precision():
     import sys
     global experiment_name
     eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    sys.argv.extend('-bs 128 -j 2  --epochs 200')
+    sys.argv.extend('-bs 128 -j 2  --epochs 200'.split())
     acc1 = eng.learning(model, optimizer, trainset, testset)
     print('Acc1:', acc1)
 
@@ -121,3 +121,7 @@ def test_precision():
 @test_function
 def test_img2lmdb_precision():
     pass
+
+
+if __name__ == '__main__':
+    test_precision()

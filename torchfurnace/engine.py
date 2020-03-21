@@ -82,7 +82,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
         self._tracer = Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name) \
             .tb_switch(self._args.no_tb) \
-            .debug_switch(self._args.debug) \
+            .debug_switch(self._args.debug or self._args.p_bar) \
             .attach(experiment_name=self._experiment_name, override=self._args.override_exp,
                     logger_name=self._args.logger_name)
 
@@ -232,7 +232,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters[mode].merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())
 
-        if self._args.no_bar:
+        if self._args.p_bar:
             train_loader = tqdm(train_loader, desc='Training')
         end = time.time()
 
@@ -307,6 +307,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         train_loader = self._warp_loader(True, train_dataset)
         val_loader = self._warp_loader(False, val_dataset)
 
+        log('==> Start ...', green=True)
         if self._args.resume:
             self._resume(model, optimizer)
 

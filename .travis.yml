@@ -9,7 +9,6 @@ dist: bionic
 cache: pip
 install:
   - pip install -r ./requirements.txt -q
-  - pip install matplotlib
 script:
   - cd torchfurnace/tests
   - python test_furnace.py
