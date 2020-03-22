@@ -1,5 +1,5 @@
 __name__ = 'torchfurnace'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = 'TianyuSu'
 __contact__ = 'tyanyu.su@gmail.com'
 

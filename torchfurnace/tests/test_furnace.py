@@ -90,7 +90,7 @@ def test_validation():
     eng = VGGNetEngine(parser).experiment_name(experiment_name)
     sys.argv.extend(['--epochs', '1'])
     sys.argv.extend(['-eval'])
-    sys.argv.extend(['--resume', 'CIFAR10/VGG_Epk1_Acc0.00_best.pth.tar'])
+    sys.argv.extend(['--resume', f'{experiment_name}/VGG_Epk1_Acc0.00_best.pth.tar'])
     eng.learning(model, optimizer, train_ds, val_ds)
 
 
@@ -136,7 +136,6 @@ def toy_load():
 
 if __name__ == '__main__':
     sys.argv.append('--debug')
-    sys.argv.append('--nowtime_exp')
 
     test_learning()
     test_validation()
