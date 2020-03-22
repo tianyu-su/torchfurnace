@@ -22,12 +22,13 @@ class Tracer(object):
     CONFIG_NAME = 'run_config'
     ARCH_NAME = 'architecture'
 
-    def __init__(self, root_dir=Path('.'), work_name='network'):
+    def __init__(self, root_dir=Path('.'), work_name='network', clean_up=5):
         self._tb_switch = True
         self._debug_switch = False
         self._dirs = {
             'work_name': root_dir / work_name
         }
+        self._clean_up = clean_up
 
     def _start_log(self, logger_name):
         # redirect stdout stderr to file
@@ -36,6 +37,14 @@ class Tracer(object):
         self._stdout = sys.stdout
         sys.stderr = self._log
         sys.stdout = self._log
+
+    def clean_up(self):
+        # remain Top5 best model checkpoint
+        files = self._dirs['checkpoint_best'].iterdir()
+        import re, os
+        files = sorted(files, key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)
+        for file in files[self._clean_up:]:
+            os.remove(file)
 
     def close(self):
         # close I/O
@@ -90,6 +99,10 @@ class Tracer(object):
         if logger_name.exists(): logger_name = f'{logger_name}_{self._get_now_time()}'
 
         if not self._debug_switch: self._start_log(logger_name)
+
+        # automatically generate a readme for recording something
+        (self._dirs['models'] / 'readme.txt').open('w+', encoding='utf-8')
+
         return self
 
     def store(self, component):

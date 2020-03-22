@@ -2,7 +2,7 @@
 # Date: 2020/3/17 12:16
 
 """
-an engine for deeplearning task
+an engine for deep learning task
 """
 __author__ = 'tianyu'
 import abc
@@ -80,11 +80,12 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._args = self._parser.parse_args()
         self._do_args()
 
-        self._tracer = Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name) \
-            .tb_switch(self._args.no_tb) \
-            .debug_switch(self._args.debug or self._args.p_bar) \
-            .attach(experiment_name=self._experiment_name, override=self._args.override_exp,
-                    logger_name=self._args.logger_name)
+        self._tracer = \
+            Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name, clean_up=self._args.clean_up) \
+                .tb_switch(self._args.no_tb) \
+                .debug_switch(self._args.debug or self._args.p_bar) \
+                .attach(experiment_name=self._experiment_name, override=self._args.nowtime_exp,
+                        logger_name=self._args.logger_name)
 
     def _resume(self, model, optimizer):
         """load more than one model and optimizer, for example GAN"""
@@ -115,7 +116,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         for m, optim in zip([model] if not isinstance(model, list) else model,
                             [optimizer] if not isinstance(optimizer, list) else optimizer):
             self._tracer.store(tc.Model(
-                f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']:.2f}{postfix}.pth.tar",
+                f"{model.__class__.__name__}{postfix}.pth.tar",
                 {
                     'epoch': self._state['epoch'] + 1,
                     'arch': str(m),

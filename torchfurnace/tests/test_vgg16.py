@@ -111,8 +111,6 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 model = VGG('VGG16')
 optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
-# optimizer = torch.optim.Adam(model.parameters(), lr=0.1, weight_decay=5e-4)
-
 
 
 @test_function

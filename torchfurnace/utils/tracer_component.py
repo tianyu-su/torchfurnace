@@ -98,7 +98,12 @@ class Model(object):
         # save checkpoint
         torch.save(self._state, pre_ckp_path / self._name)
         if self._is_best:
-            shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / self._name.replace('.pth.tar', '_best.pth.tar'))
+            import re
+            # ckp_name = f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']:.2f}{postfix}.pth.tar"
+            model_name = re.split("[.,_]", self._name, 1)[0]
+            best_name = self._name.replace('.pth.tar', '_best.pth.tar') \
+                .replace(model_name, f"{model_name}_Epk{self._state['epoch']}_Acc{self._state['best_acc1']:.2f}")
+            shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / best_name)
 
     def load(self, pre_path: Path) -> dict:
         # pre_path: located in work_name/models

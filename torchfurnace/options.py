@@ -26,7 +26,7 @@ class Parser(ArgumentParser):
         self.add_argument('--start_epoch', default=0, type=int, metavar='N', help='manual epoch number (useful on restarts)')
         self.add_argument('--epochs', default=200, type=int, help='number of total epochs to run')
         self.add_argument('-gpu', type=str, default='0', help='the number of gpu id')
-        self.add_argument('--exp_suffix', dest='extension', type=str, default='', help='some extensional information for experiment file name')
+        self.add_argument('--exp_suffix', type=str, default='', help='some extensional information for experiment file name')
         self.add_argument('--ext', dest='extension', type=str, default='', help='some extensional information, as flag')
         self.add_argument('--resume', default='', type=str, nargs='+', metavar='PATH', help='file name which is leaf file rather than complete path to need checkpoint don\'t contain *.pth.tar')
         self.add_argument('-eval', dest='evaluate', action='store_true', help='evaluate model on validation set')
@@ -35,12 +35,13 @@ class Parser(ArgumentParser):
 
         # ========================= Monitor Configs ==========================
         self.add_argument('--print_freq', '-p', default=10, type=int, help='print frequency (default: 10)')
-        self.add_argument('--logger_name', '-lname', default='log', type=str, help='logger name')
+        self.add_argument('--logger_name', '-lname', default='log.txt', type=str, help='logger name')
         self.add_argument('--work_dir', '-wdir', default='', type=str, help='workspace directory')
+        self.add_argument('--clean_up', default=5, type=int, help='save top-k best checkpoint')
         self.add_argument('--debug', action='store_true', help='open debug, setting workers of dataloaer 1')
         self.add_argument('--p_bar', action='store_true', help='open process bar')
         self.add_argument('--no_tb', action='store_false', help='close tensorboard visualization')
-        self.add_argument('--override_exp', '-orz', action='store_true', help='automatically add nowtime as end of experiment diretory')
+        self.add_argument('--nowtime_exp', '-orz', action='store_false', help='automatically add nowtime as the postfix of experiment directory')
 
 
 if __name__ == '__main__':

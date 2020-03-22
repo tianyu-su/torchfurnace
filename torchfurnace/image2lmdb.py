@@ -128,7 +128,7 @@ class ImageFolderLMDB(data.Dataset):
             image, label = data[0]
             txn.put(u'{}'.format(idx).encode('ascii'), dumps_pyarrow((image, label)))
             if idx % write_frequency == 0:
-                print("[%d/%d]" % (idx+1, len(data_loader)))
+                print("[%d/%d]" % (idx + 1, len(data_loader)))
                 txn.commit()
                 txn = db.begin(write=True)
 
@@ -143,6 +143,7 @@ class ImageFolderLMDB(data.Dataset):
         db.sync()
         db.close()
         return dataset.class_to_idx
+
 
 class ImageLMDB(object):
 
