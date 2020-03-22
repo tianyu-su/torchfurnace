@@ -16,8 +16,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
-from  torchvision.datasets import CIFAR10
 import torchvision.transforms as transforms
+from torchvision.datasets import CIFAR10
 from torch.optim.lr_scheduler import MultiStepLR
 from torchfurnace import Engine, Parser
 
@@ -81,7 +81,7 @@ So, `torchfurnace` is born for perform your pytorch AI task quickly, simply and 
 
 2. `torchfurnace` integrates some practical tools, such as processing raw dataset to LMDB for solving I/O bottleneck and computing the number of parameter size.
 
-#### Components
+### Components
 
 #### Engine
 

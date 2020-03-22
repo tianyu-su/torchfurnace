@@ -40,7 +40,7 @@ def test_config():
 def test_store_model():
     global tracer, model, optimizer
     tracer.store(tc.Model(
-        f"{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo.pth.tar",
+        f"{model.__class__.__name__}_extinfo.pth.tar",
         {
             'epoch': 99,
             'arch': str(model),

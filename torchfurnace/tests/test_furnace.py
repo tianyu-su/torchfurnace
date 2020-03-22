@@ -28,7 +28,7 @@ from torchfurnace.utils.decorator import test_function
 parser = Parser('TVGG11')
 args = parser.parse_args()
 args.dataset = 'CIFAR10'
-experiment_name = '_'.join([args.dataset, ])
+experiment_name = '_'.join([args.dataset, args.exp_suffix])
 
 
 class VGGNetEngine(Engine):
@@ -136,7 +136,7 @@ def toy_load():
 
 if __name__ == '__main__':
     sys.argv.append('--debug')
-    sys.argv.append('--override_exp')
+    sys.argv.append('--nowtime_exp')
 
     test_learning()
     test_validation()
