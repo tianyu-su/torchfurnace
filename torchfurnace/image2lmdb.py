@@ -90,17 +90,18 @@ class ImageFolderLMDB(data.Dataset):
     def folder2lmdb(dpath, name="train", write_frequency=5000, num_workers=16, lmdb_size=20480000):
         """
         The dpath has this structure of directory as follow
-        |- dpath
-        |------- train
-        |------------- dog
-        |----------------- 001.jpg
-        |------------- cat
-        |----------------- 001.jpg
-        |-------- val
-        |------------- dog
-        |----------------- 001.jpg
-        |------------- cat
-        |----------------- 001.jpg
+
+        demo_dataset/
+        ├── train
+        │   ├── cat
+        │   │   └── 001.jpg
+        │   └── dog
+        │       └── 001.jpg
+        └── val
+            ├── cat
+            │   └── 001.jpg
+            └── dog
+                └── 001.jpg
 
         :param name: train or val
         :param lmdb_size: the size of lmdb (Byte)

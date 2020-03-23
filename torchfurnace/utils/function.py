@@ -10,6 +10,7 @@ __author__ = 'tianyu'
 import os
 
 import torch
+from tqdm import tqdm
 
 from .meter import AverageMeter
 
@@ -68,3 +69,25 @@ class Chain(object):
 
     def __getattr__(self, item):
         return self.var[item]
+
+
+def get_mean_and_std(dataset, batch_size=128, num_workers=2):
+    '''
+    Compute the mean and std value of dataset.
+    transform = transforms.Compose([transforms.ToTensor()]) must be used in dataset.
+    data: shape = (N,C,W,H)
+    '''
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, num_workers=num_workers)
+    bt_mean = []
+    bt_std = []
+    for inputs, _ in tqdm(loader, desc='compute mean and std'):
+        inputs = inputs.to(device)
+        bt_mean.append(inputs.mean(dim=(-2, -1)))
+        bt_std.append(inputs.std(dim=(-2, -1)))
+
+    mean = torch.cat(bt_mean).mean(dim=0)
+    std = torch.cat(bt_std).mean(dim=0)
+
+    return mean, std

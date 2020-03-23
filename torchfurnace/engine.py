@@ -106,7 +106,12 @@ class Engine(object, metaclass=abc.ABCMeta):
 
     @staticmethod
     def _on_start_epoch():
-        """add your meters by get_meters function """
+        """
+        add your meters by get_meters function
+        for example : get_meters(['mine1', 'mine2'])
+        usage:  self._meters[mode].{name}.update()  detail in : from .meter import AverageMeter
+        """
+
         return get_meters([])
 
     def _on_end_epoch(self, model, optimizer, is_best):
@@ -131,7 +136,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         return inp.to(self._device), target.to(self._device)
 
     def _add_on_end_batch_log(self, training):
-        """ user can add some log information with _on_start_epoch using all kinds of meters"""
+        """ user can add some log information with _on_start_epoch using all kinds of meters in _on_end_batch"""
         if training:
             pass
         else:
