@@ -155,7 +155,7 @@ cfg = {"optimizer": optim, 'addtion': 'hhh'}
 tracer.store(tc.Config({**cfg, **vars(Parser('my_network').parse_args())}))
 ```
 
-cfg: some customize informations 
+cfg: some customize information 
 
 Parser('my_network').parse_args() : parser snapshot
 
@@ -184,7 +184,9 @@ save checkpoint to appropriate location automatically.
 import torchfurnace.utils.tracer_component as tc
 model = models.vgg11(pretrained=False)
 optimizer = torch.optim.Adam(model.parameters())
-# 'pth' has fix format. It contains two parts, which are experiment file name and best model file name, skipping medial path , and they are separate by '/' .
+# 'pth' has fix format. It contains two parts,
+#  which are experiment file name and best model file name,
+#  skipping medial path , and they are separate by '/' .
 pth = f"expn/{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo_best.pth.tar"
 ret = tracer.load(tc.Model(
         pth, {
@@ -196,6 +198,8 @@ print(ret)
 ```
 
 load checkpoint from appropriate location automatically.
+
+**Note:** `--resume` is assigned just like `pth`
 
 ##### display TensorBoard
 
@@ -256,6 +260,8 @@ print(args)
     "nowtime_exp":true
 }
 ```
+
+Also, you can open `from torchfurnace import Parser` to get more information.
 
 ##### add option in Engine
 
