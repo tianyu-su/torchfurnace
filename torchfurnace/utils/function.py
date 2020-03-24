@@ -4,6 +4,7 @@
 """
 some functions for learning model
 """
+import sys
 
 __author__ = 'tianyu'
 
@@ -48,10 +49,13 @@ def get_meters(names):
     return {k: AverageMeter() for k in names}
 
 
-def log(msg, green=False):
+def log(msg, green=False, p_bar=False, current_batch=0, total_batch=0):
     if green:
         print('\033[92m', end="")
-    print(msg)
+    if p_bar:
+        progress_bar(current_batch, total_batch, msg)
+    else:
+        print(msg)
     print('\033[0m', end="")
 
 
@@ -91,3 +95,22 @@ def get_mean_and_std(dataset, batch_size=128, num_workers=2):
     std = torch.cat(bt_std).mean(dim=0)
 
     return mean, std
+
+
+def progress_bar(current, total, msg=None):
+    TOTAL_BAR_LENGTH = 20.
+    cur_len = int(TOTAL_BAR_LENGTH * current / total)
+    rest_len = int(TOTAL_BAR_LENGTH - cur_len) - 1
+    sys.stdout.write(' [')
+    for i in range(cur_len):
+        sys.stdout.write('=')
+    sys.stdout.write('>')
+    for i in range(rest_len):
+        sys.stdout.write('.')
+    sys.stdout.write(']')
+    sys.stdout.write(msg)
+    if current < total - 1:
+        sys.stdout.write('\r')
+    else:
+        sys.stdout.write('\n')
+    sys.stdout.flush()

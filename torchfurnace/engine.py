@@ -156,14 +156,21 @@ class Engine(object, metaclass=abc.ABCMeta):
         training_iterations = self._state['training_iterations']
         if training:
             if self._state['iteration'] != 0 and self._state['iteration'] != 0 % self._args.print_freq == 0:
-                fix_log = 'Epoch: [{0}][{1}/{2}]\t Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t ' \
-                          'Data {data_time.val:.3f} ({data_time.avg:.3f})\tLoss {loss.val:.4f} ({loss.avg:.4f})\t' \
-                          'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
-                          'Acc@5 {top5.val:.3f} ({top5.avg:.3f}) '.format(
+                print_process_bar = {'p_bar': self._args.p_bar, 'current_batch': self._state['iteration'], 'total_batch': len(data_loader)}
+                if self._args.p_bar:
+                    prefix_info = 'Epoch:[{0}] '
+                else:
+                    prefix_info = 'Epoch: [{0}][{1}/{2}]\t'
+
+                fix_log = prefix_info + 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
+                                        'Data {data_time.val:.3f} ({data_time.avg:.3f})\tLoss {loss.val:.4f} ({loss.avg:.4f})\t' \
+                                        'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
+                                        'Acc@5 {top5.val:.3f} ({top5.avg:.3f}) '.format(
                     self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters[mode].batch_time,
                     data_time=self._meters[mode].data_time, loss=self._meters[mode].losses,
                     top1=self._meters[mode].top1, top5=self._meters[mode].top5)
-                log(fix_log + self._add_on_end_batch_log(True))
+
+                log(fix_log + self._add_on_end_batch_log(True), **print_process_bar)
                 if self._args.no_tb:
                     self._tracer.tb.add_scalars('data/loss', {
                         'training': self._meters[mode].losses.avg,
@@ -185,7 +192,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
 
         else:
-            fix_log = ('Testing: Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f} Loss {loss.avg:.4f} '
+            fix_log = ('Testing: Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f} '
                        .format(top1=self._meters[mode].top1, top5=self._meters[mode].top5, loss=self._meters[mode].losses))
             log(fix_log + self._add_on_end_batch_log(False), green=True)
             if self._args.no_tb:
@@ -238,8 +245,6 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters[mode].merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())
 
-        if self._args.p_bar:
-            train_loader = tqdm(train_loader, desc='Training')
         end = time.time()
 
         for i, batch in enumerate(train_loader):
@@ -272,8 +277,6 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters[mode].merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())
 
-        if self._args.p_bar:
-            val_loader = tqdm(val_loader, desc='Validation')
         end = time.time()
 
         with torch.no_grad():
