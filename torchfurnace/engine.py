@@ -16,7 +16,6 @@ import torch.backends.cudnn
 import torch.nn.functional as F
 import torch.utils.data
 from torch.optim.lr_scheduler import StepLR
-from tqdm import tqdm
 
 from .options import Parser
 from .tracer import Tracer
@@ -155,10 +154,10 @@ class Engine(object, metaclass=abc.ABCMeta):
         mode = 'training' if training else "validation"
         training_iterations = self._state['training_iterations']
         if training:
-            if self._state['iteration'] != 0 and self._state['iteration'] != 0 % self._args.print_freq == 0:
+            if self._state['iteration'] != 0 and self._state['iteration'] % self._args.print_freq == 0:
                 print_process_bar = {'p_bar': self._args.p_bar, 'current_batch': self._state['iteration'], 'total_batch': len(data_loader)}
                 if self._args.p_bar:
-                    prefix_info = 'Epoch:[{0}] '
+                    prefix_info = f"Epoch:[{self._state['epoch']}] "
                 else:
                     prefix_info = 'Epoch: [{0}][{1}/{2}]\t'
 
