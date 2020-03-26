@@ -46,6 +46,10 @@ class Tracer(object):
         for file in files[self._clean_up:]:
             os.remove(file)
 
+    def dirs(self, path_key):
+        assert self._dirs.__contains__(path_key), f"{path_key} is wrong path_name."
+        return self._dirs.get(path_key)
+
     def close(self):
         # close I/O
         if self._tb_switch: self._tb.close()
@@ -103,6 +107,8 @@ class Tracer(object):
         # automatically generate a readme for recording something
         (self._dirs['models'] / 'readme.txt').open('w+', encoding='utf-8')
 
+        # expose dirs
+        self._add_attr()
         return self
 
     def store(self, component):

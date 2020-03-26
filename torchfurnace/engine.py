@@ -86,6 +86,10 @@ class Engine(object, metaclass=abc.ABCMeta):
                 .attach(experiment_name=self._experiment_name, override=self._args.nowtime_exp,
                         logger_name=self._args.logger_name)
 
+    @property
+    def tracer(self):
+        return self._tracer
+
     def _resume(self, model, optimizer):
         """load more than one model and optimizer, for example GAN"""
         for pth, m, optim in zip(self._args.resume, [model] if not isinstance(model, list) else model,
@@ -221,19 +225,22 @@ class Engine(object, metaclass=abc.ABCMeta):
 
         """ for example """
         # ret can expand but DONT Shrink
-        ret = {'loss': object, 'preds': object}
+        ret = {'loss': object, 'acc': []}
 
         # do something
         output = model(inp)
         loss = F.cross_entropy(output, target)
+
+        # compute acc1 acc5
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
         if training:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-        ret['loss'] = loss
-        ret['preds'] = output
+        ret['loss'] = loss.item()
+        ret['acc'] = [acc1, acc5]
 
         return ret
         # raise NotImplementedError
@@ -258,11 +265,10 @@ class Engine(object, metaclass=abc.ABCMeta):
             # compute output
             ret = self._on_forward(True, model, inp, target, optimizer)
 
-            # compute acc1 acc5
-            acc1, acc5 = accuracy(ret['preds'], target, topk=(1, 5))
-            self._meters[mode].losses.update(ret['loss'].item(), inp.size(0))
-            self._meters[mode].top1.update(acc1[0], inp.size(0))
-            self._meters[mode].top5.update(acc5[0], inp.size(0))
+            # record indicators
+            self._meters[mode].losses.update(ret['loss'], inp.size(0))
+            self._meters[mode].top1.update(ret['acc'][0], inp.size(0))
+            self._meters[mode].top5.update(ret['acc'][1], inp.size(0))
 
             # measure elapsed time
             self._meters[mode].batch_time.update(time.time() - end)
@@ -286,11 +292,11 @@ class Engine(object, metaclass=abc.ABCMeta):
 
                 # compute output
                 ret = self._on_forward(False, model, inp, target)
-                # compute acc1 acc5
-                acc1, acc5 = accuracy(ret['preds'], target, topk=(1, 5))
-                self._meters[mode].losses.update(ret['loss'].item(), inp.size(0))
-                self._meters[mode].top1.update(acc1[0], inp.size(0))
-                self._meters[mode].top5.update(acc5[0], inp.size(0))
+
+                # record indicators
+                self._meters[mode].losses.update(ret['loss'], inp.size(0))
+                self._meters[mode].top1.update(ret['acc'][0], inp.size(0))
+                self._meters[mode].top5.update(ret['acc'][1], inp.size(0))
 
                 # measure elapsed time
                 self._meters[mode].batch_time.update(time.time() - end)

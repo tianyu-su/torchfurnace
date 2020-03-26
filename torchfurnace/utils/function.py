@@ -9,6 +9,8 @@ import sys
 __author__ = 'tianyu'
 
 import os
+import re
+from pathlib import Path
 
 import torch
 from tqdm import tqdm
@@ -41,8 +43,16 @@ def accuracy(output, target, topk=(1,)):
 
 def load_pretrained(model, pth):
     if os.path.isfile(pth):
+        log('Loading pretrained...')
         checkpoint = torch.load(pth)
         model.load_state_dict(checkpoint['state_dict'])
+        log("=> loaded pretrained! (epoch {} Acc@1 {})"
+            .format(checkpoint['epoch'], checkpoint['best_acc1']))
+
+
+def filter_best_model(best_dir: Path, prefix_name: str):
+    best_path = sorted(best_dir.glob(prefix_name), key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)[0]
+    return best_path
 
 
 def get_meters(names):
@@ -101,7 +111,7 @@ def progress_bar(current, total, msg=None):
     TOTAL_BAR_LENGTH = 20.
     cur_len = int(TOTAL_BAR_LENGTH * current / total)
     rest_len = int(TOTAL_BAR_LENGTH - cur_len) - 1
-    sys.stdout.write(' [')
+    sys.stdout.write('[')
     for i in range(cur_len):
         sys.stdout.write('=')
     sys.stdout.write('>')

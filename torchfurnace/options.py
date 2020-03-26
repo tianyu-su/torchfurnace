@@ -7,6 +7,7 @@ some command args
 __author__ = 'tianyu'
 
 from argparse import ArgumentParser
+import sys
 
 
 class Parser(ArgumentParser):
@@ -42,6 +43,10 @@ class Parser(ArgumentParser):
         self.add_argument('--p_bar', action='store_true', help='open process bar')
         self.add_argument('--no_tb', action='store_false', help='close tensorboard visualization')
         self.add_argument('--nowtime_exp', '-orz', action='store_false', help='automatically add nowtime as the postfix of experiment directory')
+
+    @staticmethod
+    def add(name, value):
+        sys.argv.extend([name, value])
 
 
 if __name__ == '__main__':
