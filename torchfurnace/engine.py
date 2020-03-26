@@ -33,17 +33,14 @@ class Engine(object, metaclass=abc.ABCMeta):
     _add_on_end_batch_log:     add some your log information
     _add_on_end_batch_tb:      add some your visualization for tensorboard by add_xxx
     """
-    gpu_id=0
-    def __init__(self, parser: Parser):
+    gpu_id = 0
+
+    def __init__(self, parser: Parser, experiment_name='exp'):
         self._parser = parser
         self._meters = {'training': Chain(), 'validation': Chain()}
         self._state = {'best_acc1': -1, 'training_iterations': 0, 'iteration': 0}
-        self._experiment_name = 'exp'
+        self._experiment_name = experiment_name
         self._init_learning()
-
-    def experiment_name(self, name):
-        self._experiment_name = name
-        return self
 
     def _close(self):
         self._tracer.close()
