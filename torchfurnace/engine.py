@@ -33,10 +33,9 @@ class Engine(object, metaclass=abc.ABCMeta):
     _add_on_end_batch_log:     add some your log information
     _add_on_end_batch_tb:      add some your visualization for tensorboard by add_xxx
     """
-
+    gpu_id=0
     def __init__(self, parser: Parser):
         self._parser = parser
-        self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self._meters = {'training': Chain(), 'validation': Chain()}
         self._state = {'best_acc1': -1, 'training_iterations': 0, 'iteration': 0}
         self._experiment_name = 'exp'
@@ -67,6 +66,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.batch_size = 2
 
         if torch.cuda.is_available():
+            self.gpu_id = self._args.gpu
             torch.backends.cudnn.benchmark = True
 
     def _warp_loader(self, training, dataset):
@@ -243,7 +243,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         return ret
         # raise NotImplementedError
 
-    @train_wrapper
+    @train_wrapper(gpu_id)
     def _train(self, model, train_loader, optimizer, epoch):
         mode = 'training'
         self._meters[mode].merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
@@ -274,7 +274,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
             self._on_end_batch(True, train_loader, optimizer)
 
-    @val_wrapper
+    @val_wrapper(gpu_id)
     def _validate(self, model, val_loader):
         mode = 'validation'
         self._meters[mode].merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
