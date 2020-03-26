@@ -39,6 +39,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._meters = {'training': Chain(), 'validation': Chain()}
         self._state = {'best_acc1': -1, 'training_iterations': 0, 'iteration': 0}
         self._experiment_name = 'exp'
+        self._init_learning()
 
     def experiment_name(self, name):
         self._experiment_name = name
@@ -311,7 +312,6 @@ class Engine(object, metaclass=abc.ABCMeta):
         :param model: one or list
         :param optimizer: one or list
         """
-        self._init_learning()
 
         # save config
         cfg = {f"optimizer{i + 1}": optim for i, optim in enumerate([optimizer] if not isinstance(optimizer, list) else optimizer)}
