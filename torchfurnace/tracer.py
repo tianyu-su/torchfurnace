@@ -108,7 +108,6 @@ class Tracer(object):
         (self._dirs['models'] / 'readme.txt').open('w+', encoding='utf-8')
 
         # expose dirs
-        self._add_attr()
         return self
 
     def store(self, component):

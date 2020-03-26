@@ -67,8 +67,6 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.batch_size = 2
 
         if torch.cuda.is_available():
-            import os
-            os.environ["CUDA_VISIBLE_DEVICES"] = self._args.gpu
             torch.backends.cudnn.benchmark = True
 
     def _warp_loader(self, training, dataset):
@@ -136,7 +134,7 @@ class Engine(object, metaclass=abc.ABCMeta):
     def _on_start_batch(self, data):
         """override to adapt yourself dataset __getitem__"""
         inp, target = data
-        return inp.to(self._device), target.to(self._device)
+        return inp.cuda(self._args.gpu), target.cuda(self._args.gpu)
 
     def _add_on_end_batch_log(self, training):
         """ user can add some log information with _on_start_epoch using all kinds of meters in _on_end_batch"""
@@ -240,7 +238,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             optimizer.step()
 
         ret['loss'] = loss.item()
-        ret['acc'] = [acc1, acc5]
+        ret['acc'] = [acc1.item(), acc5.item()]
 
         return ret
         # raise NotImplementedError
