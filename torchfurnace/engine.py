@@ -20,7 +20,6 @@ from torch.optim.lr_scheduler import StepLR
 from .options import Parser
 from .tracer import Tracer
 from .utils import tracer_component as tc
-from .utils.decorator import *
 from .utils.function import *
 
 
@@ -33,7 +32,6 @@ class Engine(object, metaclass=abc.ABCMeta):
     _add_on_end_batch_log:     add some your log information
     _add_on_end_batch_tb:      add some your visualization for tensorboard by add_xxx
     """
-    gpu_id = 0
 
     def __init__(self, parser: Parser, experiment_name='exp'):
         self._parser = parser
@@ -64,7 +62,6 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.batch_size = 2
 
         if torch.cuda.is_available():
-            pdb.set_trace()
             self.gpu_id = self._args.gpu
             torch.backends.cudnn.benchmark = True
 
@@ -243,8 +240,10 @@ class Engine(object, metaclass=abc.ABCMeta):
         return ret
         # raise NotImplementedError
 
-    @train_wrapper(gpu_id)
     def _train(self, model, train_loader, optimizer, epoch):
+        # setup model
+        [m.cuda(self._args.gpu) or m.train() for m in (model if isinstance(model, list) else [model])]
+
         mode = 'training'
         self._meters[mode].merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())
@@ -274,8 +273,10 @@ class Engine(object, metaclass=abc.ABCMeta):
 
             self._on_end_batch(True, train_loader, optimizer)
 
-    @val_wrapper(gpu_id)
     def _validate(self, model, val_loader):
+        # setup model
+        [m.cuda(self._args.gpu) or m.eval() for m in (model if isinstance(model, list) else [model])]
+
         mode = 'validation'
         self._meters[mode].merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
         self._meters[mode].merge(self._on_start_epoch())

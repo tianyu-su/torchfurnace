@@ -22,7 +22,8 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 
 from torchfurnace import Engine, Parser
-from torchfurnace.utils.decorator import test_function
+from .test_utils import test_function
+
 
 # define experiment
 parser = Parser('TVGG16')

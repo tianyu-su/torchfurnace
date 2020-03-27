@@ -15,7 +15,8 @@ print(sys.path)
 print(f'Testing {Path(__file__)}')
 
 from torchfurnace import ImageLMDB, ImageFolderLMDB
-from torchfurnace.utils.decorator import test_function
+from .test_utils import test_function
+
 
 
 @test_function

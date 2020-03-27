@@ -22,7 +22,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 
 from torchfurnace import Engine, Parser
-from torchfurnace.utils.decorator import test_function
+from .test_utils import test_function
 
 # define experiment
 parser = Parser('TVGG11')
