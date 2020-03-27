@@ -100,7 +100,7 @@ class Model(object):
         if self._is_best:
             import re
             # ckp_name = f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']:.2f}{postfix}.pth.tar"
-            model_name = re.split("[.,_]", self._name, 1)[0]
+            model_name = self._name.split(".pth.tar")[0]
             best_name = self._name.replace('.pth.tar', '_best.pth.tar') \
                 .replace(model_name, f"{model_name.split('.pth.tar')[0]}_Epk{self._state['epoch']}_Acc{self._state['best_acc1']:.2f}")
             shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / best_name)
