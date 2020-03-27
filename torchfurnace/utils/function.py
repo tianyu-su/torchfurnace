@@ -122,5 +122,5 @@ def progress_bar(current, total, msg=None):
     if current < total - 1:
         sys.stdout.write('\r')
     else:
-        sys.stdout.write('\n\n')
+        sys.stdout.write('\n')
     sys.stdout.flush()

@@ -86,7 +86,7 @@ class Tracer(object):
             experiment_name += f"_{Tracer._get_now_time()}"
         self._dirs['experiment_name'] = experiment_name
         if self._tb_switch:
-            self._dirs['tensorboard'] = self._dirs['work_name'] / 'tensorboard' / f"{self._dirs['experiment_name']}_{Tracer._get_now_time()}"
+            self._dirs['tensorboard'] = self._dirs['work_name'] / 'tensorboard' / f"{self._dirs['experiment_name']}"
         self._dirs['models'] = self._dirs['work_name'] / 'models' / self._dirs['experiment_name']
         self._dirs['checkpoint_best'] = self._dirs['models'] / 'checkpoint' / 'best'
         self._dirs['logs'] = self._dirs['work_name'] / 'logs' / self._dirs['experiment_name']

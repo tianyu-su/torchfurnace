@@ -157,14 +157,15 @@ class Engine(object, metaclass=abc.ABCMeta):
             if self._state['iteration'] != 0 and self._state['iteration'] % self._args.print_freq == 0:
                 print_process_bar = {'p_bar': self._args.p_bar, 'current_batch': self._state['iteration'], 'total_batch': len(data_loader)}
                 if self._args.p_bar:
-                    prefix_info = f"Epoch:[{self._state['epoch']}] "
+                    prefix_info = "Epoch:[{0}] "
                 else:
                     prefix_info = 'Epoch: [{0}][{1}/{2}]\t'
 
                 fix_log = prefix_info + 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
                                         'Data {data_time.val:.3f} ({data_time.avg:.3f})\tLoss {loss.val:.4f} ({loss.avg:.4f})\t' \
                                         'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
-                                        'Acc@5 {top5.val:.3f} ({top5.avg:.3f}) '.format(
+                                        'Acc@5 {top5.val:.3f} ({top5.avg:.3f})'
+                fix_log = fix_log.format(
                     self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters[mode].batch_time,
                     data_time=self._meters[mode].data_time, loss=self._meters[mode].losses,
                     top1=self._meters[mode].top1, top5=self._meters[mode].top5)
