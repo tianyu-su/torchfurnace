@@ -4,6 +4,8 @@
 """
 module description
 """
+import pdb
+
 __author__ = 'tianyu'
 import functools
 
@@ -16,6 +18,7 @@ def train_wrapper(gpu_id):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             if torch.cuda.is_available():
+                pdb.set_trace()
                 for arg in args:
                     if isinstance(arg, list):
                         [var.cuda(gpu_id) or var.train() for var in arg if isinstance(var, nn.Module)]
@@ -33,6 +36,7 @@ def val_wrapper(gpu_id):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             if torch.cuda.is_available():
+                pdb.set_trace()
                 for arg in args:
                     if isinstance(arg, list):
                         [var.cuda(gpu_id) or var.eval() for var in arg if isinstance(var, nn.Module)]
