@@ -52,7 +52,7 @@ def load_pretrained(model, pth):
 
 def filter_best_model(best_dir: Path, prefix_name: str):
     best_path = sorted(best_dir.glob(prefix_name), key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)[0]
-    return best_path
+    return best_path.absolute()
 
 
 def get_meters(names):
@@ -122,5 +122,5 @@ def progress_bar(current, total, msg=None):
     if current < total - 1:
         sys.stdout.write('\r')
     else:
-        sys.stdout.write('\n')
+        sys.stdout.write('\n\n')
     sys.stdout.flush()
