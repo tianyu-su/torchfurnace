@@ -64,6 +64,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.batch_size = 2
 
         if torch.cuda.is_available():
+            pdb.set_trace()
             self.gpu_id = self._args.gpu
             torch.backends.cudnn.benchmark = True
 

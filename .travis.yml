@@ -15,7 +15,7 @@ script:
   - cat mine_network/logs/expn/log
 branches:
   only:
-    - master
+#    - master
     - /^v.*$/
 before_deploy:
   - cd $BUILD_DIR
