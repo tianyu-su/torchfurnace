@@ -98,7 +98,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._args.epochs += self._args.start_epoch
 
     @staticmethod
-    def _get_lr_scheduler(optimizer: object) -> list:
+    def _get_lr_scheduler(optimizer: torch.optim.Optimizer) -> list:
         return [StepLR(optim, 30, gamma=0.1) for optim in ([optimizer] if not isinstance(optimizer, list) else optimizer)]
 
     @staticmethod
