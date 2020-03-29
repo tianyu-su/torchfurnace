@@ -28,7 +28,7 @@ class Tracer(object):
         self._dirs = {
             'work_name': root_dir / work_name
         }
-        self._clean_up = clean_up
+        self._clean_up_top = clean_up
 
     def _start_log(self, logger_name):
         # redirect stdout stderr to file
@@ -38,12 +38,12 @@ class Tracer(object):
         sys.stderr = self._log
         sys.stdout = self._log
 
-    def clean_up(self):
+    def _clean_up(self):
         # remain Top5 best model checkpoint
         files = self._dirs['checkpoint_best'].iterdir()
         import re, os
         files = sorted(files, key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)
-        for file in files[self._clean_up:]:
+        for file in files[self._clean_up_top:]:
             os.remove(file)
 
     def dirs(self, path_key):
@@ -51,6 +51,7 @@ class Tracer(object):
         return self._dirs.get(path_key)
 
     def close(self):
+        self._clean_up()
         # close I/O
         if self._tb_switch: self._tb.close()
         if not self._debug_switch:

@@ -9,7 +9,6 @@ import abc
 import random
 import time
 import warnings
-from pathlib import Path
 
 import numpy as np
 import torch.backends.cudnn
@@ -31,14 +30,32 @@ class Engine(object, metaclass=abc.ABCMeta):
     _on_start_batch:           define how to read your dataset to return input,target as well as put on right device
     _add_on_end_batch_log:     add some your log information
     _add_on_end_batch_tb:      add some your visualization for tensorboard by add_xxx
+    _add_record:               add some record information
     """
 
     def __init__(self, parser: Parser, experiment_name='exp'):
         self._parser = parser
-        self._meters = {'training': Chain(), 'validation': Chain()}
+        self._switch_training = True
+        self._meters = self._status_meter()
         self._state = {'best_acc1': -1, 'training_iterations': 0, 'iteration': 0}
         self._experiment_name = experiment_name
         self._init_learning()
+
+    def _status_meter(self):
+        outer = self
+
+        class StatusMeter(object):
+            def __init__(self):
+                self._training = Chain()
+                self._validation = Chain()
+
+            def __getattr__(self, item):
+                if outer._switch_training:
+                    return getattr(self._training, item)
+                else:
+                    return getattr(self._validation, item)
+
+        return StatusMeter()
 
     def _close(self):
         self._tracer.close()
@@ -111,6 +128,12 @@ class Engine(object, metaclass=abc.ABCMeta):
 
         return get_meters([])
 
+    def _add_record(self, ret_forward, batch_size):
+        """
+        self._meters.top5.update(ret_forward['acc'][1], batch_size)
+        """
+        pass
+
     def _on_end_epoch(self, model, optimizer, is_best):
         """save more than one model and optimizer, for example GAN"""
         postfix = f'_{self._args.extension}'
@@ -147,11 +170,10 @@ class Engine(object, metaclass=abc.ABCMeta):
         else:
             pass
 
-    def _on_end_batch(self, training, data_loader, optimizer=None):
+    def _on_end_batch(self, data_loader, optimizer=None):
         """ print log and visualization"""
-        mode = 'training' if training else "validation"
         training_iterations = self._state['training_iterations']
-        if training:
+        if self._switch_training:
             if self._state['iteration'] != 0 and self._state['iteration'] % self._args.print_freq == 0:
                 print_process_bar = {'p_bar': self._args.p_bar, 'current_batch': self._state['iteration'], 'total_batch': len(data_loader)}
                 if self._args.p_bar:
@@ -164,44 +186,42 @@ class Engine(object, metaclass=abc.ABCMeta):
                                         'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
                                         'Acc@5 {top5.val:.3f} ({top5.avg:.3f})'
                 fix_log = fix_log.format(
-                    self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters[mode].batch_time,
-                    data_time=self._meters[mode].data_time, loss=self._meters[mode].losses,
-                    top1=self._meters[mode].top1, top5=self._meters[mode].top5)
+                    self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters.batch_time,
+                    data_time=self._meters.data_time, loss=self._meters.losses,
+                    top1=self._meters.top1, top5=self._meters.top5)
 
                 log(fix_log + self._add_on_end_batch_log(True), **print_process_bar)
                 if self._args.no_tb:
                     self._tracer.tb.add_scalars('data/loss', {
-                        'training': self._meters[mode].losses.avg,
+                        'training': self._meters.losses.avg,
                     }, training_iterations)
                     self._tracer.tb.add_scalar('data/epochs', self._state['epoch'], training_iterations)
                     for oi, optim in enumerate([optimizer] if not isinstance(optimizer, list) else optimizer):
                         self._tracer.tb.add_scalars(f'data/learning_rate', {f'lr_optim_{oi + 1}': optim.param_groups[-1]['lr']}, training_iterations)
                     self._tracer.tb.add_scalars('data/precision/top1', {
-                        'training': self._meters[mode].top1.avg,
+                        'training': self._meters.top1.avg,
                     }, training_iterations)
                     self._tracer.tb.add_scalars('data/precision/top5', {
-                        'training': self._meters[mode].top5.avg
+                        'training': self._meters.top5.avg
                     }, training_iterations)
                     self._tracer.tb.add_scalars('data/runtime', {
-                        'batch_time': self._meters[mode].batch_time.avg,
-                        'data_time': self._meters[mode].data_time.avg
+                        'batch_time': self._meters.batch_time.avg,
+                        'data_time': self._meters.data_time.avg
                     }, training_iterations)
                     self._add_on_end_batch_tb(True)
-
-
         else:
             fix_log = ('Testing: Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f} '
-                       .format(top1=self._meters[mode].top1, top5=self._meters[mode].top5, loss=self._meters[mode].losses))
+                       .format(top1=self._meters.top1, top5=self._meters.top5, loss=self._meters.losses))
             log(fix_log + self._add_on_end_batch_log(False), green=True)
             if self._args.no_tb:
                 self._tracer.tb.add_scalars('data/loss', {
-                    'validation': self._meters[mode].losses.avg,
+                    'validation': self._meters.losses.avg,
                 }, training_iterations)
                 self._tracer.tb.add_scalars('data/precision/top1', {
-                    'validation': self._meters[mode].top1.avg,
+                    'validation': self._meters.top1.avg,
                 }, training_iterations)
                 self._tracer.tb.add_scalars('data/precision/top5', {
-                    'validation': self._meters[mode].top5.avg
+                    'validation': self._meters.top5.avg
                 }, training_iterations)
                 self._add_on_end_batch_tb(False)
 
@@ -244,9 +264,9 @@ class Engine(object, metaclass=abc.ABCMeta):
         # setup model
         [m.cuda(self._args.gpu) or m.train() for m in (model if isinstance(model, list) else [model])]
 
-        mode = 'training'
-        self._meters[mode].merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
-        self._meters[mode].merge(self._on_start_epoch())
+        self._switch_training = True
+        self._meters.merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
+        self._meters.merge(self._on_start_epoch())
 
         end = time.time()
 
@@ -255,7 +275,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._state['iteration'] = i
             self._state['epoch'] = epoch
             # measure data loading time
-            self._meters[mode].data_time.update(time.time() - end)
+            self._meters.data_time.update(time.time() - end)
 
             inp, target = self._on_start_batch(batch)
 
@@ -263,12 +283,13 @@ class Engine(object, metaclass=abc.ABCMeta):
             ret = self._on_forward(True, model, inp, target, optimizer)
 
             # record indicators
-            self._meters[mode].losses.update(ret['loss'], inp.size(0))
-            self._meters[mode].top1.update(ret['acc'][0], inp.size(0))
-            self._meters[mode].top5.update(ret['acc'][1], inp.size(0))
+            self._meters.losses.update(ret['loss'], inp.size(0))
+            self._meters.top1.update(ret['acc'][0], inp.size(0))
+            self._meters.top5.update(ret['acc'][1], inp.size(0))
+            self._add_record(ret, inp.size(0))
 
             # measure elapsed time
-            self._meters[mode].batch_time.update(time.time() - end)
+            self._meters.batch_time.update(time.time() - end)
             end = time.time()
 
             self._on_end_batch(True, train_loader, optimizer)
@@ -277,9 +298,9 @@ class Engine(object, metaclass=abc.ABCMeta):
         # setup model
         [m.cuda(self._args.gpu) or m.eval() for m in (model if isinstance(model, list) else [model])]
 
-        mode = 'validation'
-        self._meters[mode].merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
-        self._meters[mode].merge(self._on_start_epoch())
+        self._switch_training = False
+        self._meters.merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
+        self._meters.merge(self._on_start_epoch())
 
         end = time.time()
 
@@ -293,16 +314,17 @@ class Engine(object, metaclass=abc.ABCMeta):
                 ret = self._on_forward(False, model, inp, target)
 
                 # record indicators
-                self._meters[mode].losses.update(ret['loss'], inp.size(0))
-                self._meters[mode].top1.update(ret['acc'][0], inp.size(0))
-                self._meters[mode].top5.update(ret['acc'][1], inp.size(0))
+                self._meters.losses.update(ret['loss'], inp.size(0))
+                self._meters.top1.update(ret['acc'][0], inp.size(0))
+                self._meters.top5.update(ret['acc'][1], inp.size(0))
+                self._add_record(ret, inp.size(0))
 
                 # measure elapsed time
-                self._meters[mode].batch_time.update(time.time() - end)
+                self._meters.batch_time.update(time.time() - end)
                 end = time.time()
 
             self._on_end_batch(False, val_loader)
-        return self._meters[mode].top1.avg
+        return self._meters.top1.avg
 
     def learning(self, model, optimizer, train_dataset, val_dataset):
         """
