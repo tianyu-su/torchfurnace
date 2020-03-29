@@ -44,7 +44,7 @@ def accuracy(output, target, topk=(1,)):
 def load_pretrained(model, pth):
     if os.path.isfile(pth):
         log('Loading pretrained...')
-        checkpoint = torch.load(pth)
+        checkpoint = torch.load(pth, map_location='cpu')
         model.load_state_dict(checkpoint['state_dict'])
         log("=> loaded pretrained! (epoch {} Acc@1 {})"
             .format(checkpoint['epoch'], checkpoint['best_acc1']))

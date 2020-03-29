@@ -112,7 +112,7 @@ class Model(object):
         ret = {'start_epoch': -1, 'best_acc1': -1}
         if file_path.is_file():
             log("=> loading checkpoint '{}'".format(file_path))
-            checkpoint = torch.load(file_path)
+            checkpoint = torch.load(file_path, map_location='cpu')
             ret['start_epoch'] = checkpoint['epoch']
             ret['best_acc1'] = checkpoint['best_acc1']
             self._state['model'].load_state_dict(checkpoint['state_dict'])
