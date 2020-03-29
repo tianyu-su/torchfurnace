@@ -292,7 +292,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._meters.batch_time.update(time.time() - end)
             end = time.time()
 
-            self._on_end_batch(True, train_loader, optimizer)
+            self._on_end_batch(train_loader, optimizer)
 
     def _validate(self, model, val_loader):
         # setup model
@@ -323,7 +323,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                 self._meters.batch_time.update(time.time() - end)
                 end = time.time()
 
-            self._on_end_batch(False, val_loader)
+            self._on_end_batch(val_loader)
         return self._meters.top1.avg
 
     def learning(self, model, optimizer, train_dataset, val_dataset):
