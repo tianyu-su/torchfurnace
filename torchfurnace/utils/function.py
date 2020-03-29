@@ -46,8 +46,8 @@ def load_pretrained(model, pth):
         log('Loading pretrained...')
         checkpoint = torch.load(pth, map_location='cpu')
         model.load_state_dict(checkpoint['state_dict'])
-        log("=> loaded pretrained! (epoch {} Acc@1 {})"
-            .format(checkpoint['epoch'], checkpoint['best_acc1']))
+        # log("=> loaded pretrained! (epoch {} Acc@1 {})"
+        #     .format(checkpoint['epoch'], checkpoint['best_acc1']))
 
 
 def filter_best_model(best_dir: Path, prefix_name: str):
