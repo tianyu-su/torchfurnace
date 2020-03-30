@@ -153,7 +153,7 @@ class Engine(object, metaclass=abc.ABCMeta):
     def _on_start_batch(self, data):
         """override to adapt yourself dataset __getitem__"""
         inp, target = data
-        return inp.cuda(self._args.gpu), target.cuda(self._args.gpu)
+        return inp.cuda(self._args.gpu), target.cuda(self._args.gpu), inp.size(0)
 
     def _add_on_end_batch_log(self, training):
         """ user can add some log information with _on_start_epoch using all kinds of meters in _on_end_batch"""
@@ -277,16 +277,16 @@ class Engine(object, metaclass=abc.ABCMeta):
             # measure data loading time
             self._meters.data_time.update(time.time() - end)
 
-            inp, target = self._on_start_batch(batch)
+            inp, target, bs = self._on_start_batch(batch)
 
             # compute output
             ret = self._on_forward(True, model, inp, target, optimizer)
 
             # record indicators
-            self._meters.losses.update(ret['loss'], inp.size(0))
-            self._meters.top1.update(ret['acc'][0], inp.size(0))
-            self._meters.top5.update(ret['acc'][1], inp.size(0))
-            self._add_record(ret, inp.size(0))
+            self._meters.losses.update(ret['loss'], bs)
+            self._meters.top1.update(ret['acc'][0], bs)
+            self._meters.top5.update(ret['acc'][1], bs)
+            self._add_record(ret, bs)
 
             # measure elapsed time
             self._meters.batch_time.update(time.time() - end)
@@ -308,16 +308,16 @@ class Engine(object, metaclass=abc.ABCMeta):
             for i, batch in enumerate(val_loader):
                 self._state['iteration'] = i
 
-                inp, target = self._on_start_batch(batch)
+                inp, target, bs = self._on_start_batch(batch)
 
                 # compute output
                 ret = self._on_forward(False, model, inp, target)
 
                 # record indicators
-                self._meters.losses.update(ret['loss'], inp.size(0))
-                self._meters.top1.update(ret['acc'][0], inp.size(0))
-                self._meters.top5.update(ret['acc'][1], inp.size(0))
-                self._add_record(ret, inp.size(0))
+                self._meters.losses.update(ret['loss'], bs)
+                self._meters.top1.update(ret['acc'][0], bs)
+                self._meters.top5.update(ret['acc'][1], bs)
+                self._add_record(ret, bs)
 
                 # measure elapsed time
                 self._meters.batch_time.update(time.time() - end)
