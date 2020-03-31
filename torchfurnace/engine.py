@@ -78,8 +78,10 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.workers = 0
             self._args.batch_size = 2
 
-        # if torch.cuda.is_available():
-        #     torch.backends.cudnn.benchmark = True
+        if self._args.gpu is not None:
+            # torch.backends.cudnn.benchmark = True
+            import os
+            os.environ['CUDA_VISIBLE_DEVICES'] = self._args.gpu
 
     def _warp_loader(self, training, dataset):
         return torch.utils.data.DataLoader(dataset, batch_size=self._args.batch_size, num_workers=self._args.workers,
