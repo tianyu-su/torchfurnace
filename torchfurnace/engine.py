@@ -82,6 +82,10 @@ class Engine(object, metaclass=abc.ABCMeta):
             # torch.backends.cudnn.benchmark = True
             import os
             os.environ['CUDA_VISIBLE_DEVICES'] = str(self._args.gpu)
+            # assign 0 because if you code os.environ['CUDA_VISIBLE_DEVICES']=xx,
+            # all gpu device is 0 in pytorch context, otherwise you will get a
+            # RuntimeError: CUDA error: invalid device ordinal
+            self._args.gpu = 0
 
     def _warp_loader(self, training, dataset):
         return torch.utils.data.DataLoader(dataset, batch_size=self._args.batch_size, num_workers=self._args.workers,
