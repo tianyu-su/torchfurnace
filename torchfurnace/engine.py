@@ -78,9 +78,8 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._args.workers = 0
             self._args.batch_size = 2
 
-        if torch.cuda.is_available():
-            self.gpu_id = self._args.gpu
-            torch.backends.cudnn.benchmark = True
+        # if torch.cuda.is_available():
+        #     torch.backends.cudnn.benchmark = True
 
     def _warp_loader(self, training, dataset):
         return torch.utils.data.DataLoader(dataset, batch_size=self._args.batch_size, num_workers=self._args.workers,
@@ -130,7 +129,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
     def _add_record(self, ret_forward, batch_size):
         """
-        self._meters.top5.update(ret_forward['acc'][1], batch_size)
+        self._meters.losses.update(ret['loss'], bs)
         """
         pass
 
@@ -153,7 +152,10 @@ class Engine(object, metaclass=abc.ABCMeta):
     def _on_start_batch(self, data):
         """override to adapt yourself dataset __getitem__"""
         inp, target = data
-        return inp.cuda(self._args.gpu), target.cuda(self._args.gpu), inp.size(0)
+        if self._args.gpu is not None:
+            return inp.cuda(self._args.gpu), target.cuda(self._args.gpu), target.size(0)
+        else:
+            return inp, target, target.size(0)
 
     def _add_on_end_batch_log(self, training):
         """ user can add some log information with _on_start_epoch using all kinds of meters in _on_end_batch"""
@@ -240,7 +242,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
         """ for example """
         # ret can expand but DONT Shrink
-        ret = {'loss': object, 'acc': []}
+        ret = {'loss': object, 'acc1': object, 'acc5': object}
 
         # do something
         output = model(inp)
@@ -261,10 +263,11 @@ class Engine(object, metaclass=abc.ABCMeta):
         # raise NotImplementedError
 
     def _train(self, model, train_loader, optimizer, epoch):
-        # setup model
-        [m.cuda(self._args.gpu) or m.train() for m in (model if isinstance(model, list) else [model])]
-
         self._switch_training = True
+
+        # setup model
+        [m.train() for m in (model if isinstance(model, list) else [model])]
+
         self._meters.merge(get_meters(['batch_time', 'data_time', 'losses', 'top1', 'top5']))
         self._meters.merge(self._on_start_epoch())
 
@@ -284,8 +287,8 @@ class Engine(object, metaclass=abc.ABCMeta):
 
             # record indicators
             self._meters.losses.update(ret['loss'], bs)
-            self._meters.top1.update(ret['acc'][0], bs)
-            self._meters.top5.update(ret['acc'][1], bs)
+            self._meters.top1.update(ret['acc1'], bs)
+            self._meters.top5.update(ret['acc5'], bs)
             self._add_record(ret, bs)
 
             # measure elapsed time
@@ -295,10 +298,11 @@ class Engine(object, metaclass=abc.ABCMeta):
             self._on_end_batch(train_loader, optimizer)
 
     def _validate(self, model, val_loader):
-        # setup model
-        [m.cuda(self._args.gpu) or m.eval() for m in (model if isinstance(model, list) else [model])]
-
         self._switch_training = False
+
+        # setup model
+        [m.eval() for m in (model if isinstance(model, list) else [model])]
+
         self._meters.merge(get_meters(['batch_time', 'losses', 'top1', 'top5']))
         self._meters.merge(self._on_start_epoch())
 
@@ -315,8 +319,8 @@ class Engine(object, metaclass=abc.ABCMeta):
 
                 # record indicators
                 self._meters.losses.update(ret['loss'], bs)
-                self._meters.top1.update(ret['acc'][0], bs)
-                self._meters.top5.update(ret['acc'][1], bs)
+                self._meters.top1.update(ret['acc1'], bs)
+                self._meters.top5.update(ret['acc5'], bs)
                 self._add_record(ret, bs)
 
                 # measure elapsed time
@@ -345,6 +349,10 @@ class Engine(object, metaclass=abc.ABCMeta):
         log('==> Start ...', green=True)
         if self._args.resume:
             self._resume(model, optimizer)
+
+        # cuda setup
+        if self._args.gpu is not None:
+            [m.cuda(self._args.gpu) for m in (model if isinstance(model, list) else [model])]
 
         if self._args.evaluate:
             self._validate(model, val_loader)

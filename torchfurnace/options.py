@@ -26,7 +26,7 @@ class Parser(ArgumentParser):
         self.add_argument('-dp', dest='dropout', type=float, default=0.5, help='dropout')
         self.add_argument('--start_epoch', default=0, type=int, metavar='N', help='manual epoch number (useful on restarts)')
         self.add_argument('--epochs', default=200, type=int, help='number of total epochs to run')
-        self.add_argument('-gpu', type=int, default=0, help='the number of gpu id')
+        self.add_argument('-gpu', type=int, default=None, help='the number of gpu id')
         self.add_argument('--exp_suffix', type=str, default='', help='some extensional information for experiment file name')
         self.add_argument('--ext', dest='extension', type=str, default='', help='some extensional information, as flag')
         self.add_argument('--resume', default='', type=str, nargs='+', metavar='PATH', help='file name which is leaf file rather than complete path to need checkpoint don\'t contain *.pth.tar')
