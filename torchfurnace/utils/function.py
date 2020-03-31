@@ -48,7 +48,8 @@ def load_pretrained(model, pth):
         model.load_state_dict(checkpoint['state_dict'])
         # log("=> loaded pretrained! (epoch {} Acc@1 {})"
         #     .format(checkpoint['epoch'], checkpoint['best_acc1']))
-
+    else:
+        raise RuntimeError(f'Not exist ==> {pth}')
 
 def filter_best_model(best_dir: Path, prefix_name: str):
     best_path = sorted(best_dir.glob(prefix_name), key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)[0]
