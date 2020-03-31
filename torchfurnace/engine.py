@@ -89,6 +89,9 @@ class Engine(object, metaclass=abc.ABCMeta):
         self._args = self._parser.parse_args()
         self._do_args()
 
+        if self._args.p_bar:
+            self._args.print_freq = 1
+
         self._tracer = \
             Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name, clean_up=self._args.clean_up) \
                 .tb_switch(self._args.no_tb) \
@@ -212,8 +215,9 @@ class Engine(object, metaclass=abc.ABCMeta):
                     }, training_iterations)
                     self._add_on_end_batch_tb(True)
         else:
-            fix_log = ('Testing: Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f} '
-                       .format(top1=self._meters.top1, top5=self._meters.top5, loss=self._meters.losses))
+            fix_log = ('Testing: Epoch [{0}]  Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f} [best:{best_acc}]'
+                       .format(self._state['epoch'], top1=self._meters.top1, top5=self._meters.top5,
+                               loss=self._meters.losses, best_acc=self._state['best_acc1']))
             log(fix_log + self._add_on_end_batch_log(False), green=True)
             if self._args.no_tb:
                 self._tracer.tb.add_scalars('data/loss', {
