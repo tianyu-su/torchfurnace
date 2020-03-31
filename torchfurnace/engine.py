@@ -189,7 +189,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                 fix_log = prefix_info + 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
                                         'Data {data_time.val:.3f} ({data_time.avg:.3f})\tLoss {loss.val:.4f} ({loss.avg:.4f})\t' \
                                         'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t' \
-                                        'Acc@5 {top5.val:.3f} ({top5.avg:.3f})'
+                                        'Acc@5 {top5.val:.3f} ({top5.avg:.3f})\t'
                 fix_log = fix_log.format(
                     self._state['epoch'], self._state['iteration'], len(data_loader), batch_time=self._meters.batch_time,
                     data_time=self._meters.data_time, loss=self._meters.losses,
@@ -215,7 +215,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                     }, training_iterations)
                     self._add_on_end_batch_tb(True)
         else:
-            fix_log = ('Testing: Epoch [{0}]  Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f} [best:{best_acc}]'
+            fix_log = ('Testing: Epoch [{0}]  Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f}\t[best:{best_acc}]\t'
                        .format(self._state['epoch'], top1=self._meters.top1, top5=self._meters.top5,
                                loss=self._meters.losses, best_acc=self._state['best_acc1']))
             log(fix_log + self._add_on_end_batch_log(False), green=True)
