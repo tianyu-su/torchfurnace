@@ -119,7 +119,7 @@ def progress_bar(current, total, msg=None):
         sys.stdout.write('.')
     sys.stdout.write(']')
     sys.stdout.write(msg)
-    if current < total - 2:
+    if current < total - 5:
         sys.stdout.write('\r')
     else:
         sys.stdout.write('\n')
