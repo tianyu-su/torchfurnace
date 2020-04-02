@@ -1,4 +1,4 @@
-# Big refactoring, but document is old. Fill it in soon. orz
+# Big refactor, but document is old. Fill it in soon. orz
 # torchfurnace [![Build Status](https://travis-ci.com/tianyu-su/torchfurnace.svg?branch=master)](https://travis-ci.com/tianyu-su/torchfurnace) ![](https://img.shields.io/badge/pytorch-1.1.0-blue) ![](https://img.shields.io/badge/python-3.6-blue)
 
 `torchfurnace` is a tool package for training model, pre-processing dataset and managing experiment record in pytorch AI tasks.
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
 There are some deep learning frameworks to quickly build a training system in pytorch AI tasks, however, I found that most of them are complex framework which have higher cost for learning it and seriously invade original code , for instance, maybe modify your model class to adapt the framework.
 
-So, `torchfurnace` is born for perform your pytorch AI task quickly, simply and without invasion viz you don't have to change too much defined code.
+So, `torchfurnace` is born for performing your pytorch AI task quickly, simply and without invasion viz you don't have to change too much defined code.
 
 ### What features?
 

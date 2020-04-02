@@ -40,7 +40,7 @@ class Tracer(object):
 
     def _clean_up(self):
         # remain Top5 best model checkpoint
-        files = self._dirs['checkpoint_best'].iterdir()
+        files = self._dirs['checkpoint_best'].glob('{}*'.format(self._clean_up_prefix))
         import re, os
         files = sorted(files, key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)
         for file in files[self._clean_up_top:]:
@@ -115,6 +115,7 @@ class Tracer(object):
         if isinstance(component, Config):
             component.save(self._dirs['models'] / f'{Tracer.CONFIG_NAME}.json')
         if isinstance(component, Model):
+            self._clean_up_prefix = component.name.replace('.pth.tar', '')
             component.save(self._dirs['checkpoint_best'].parent, self._dirs['models'] / f'{Tracer.ARCH_NAME}.txt')
 
     def load(self, component):

@@ -91,6 +91,10 @@ class Model(object):
         self._state = state
         self._is_best = is_best
 
+    @property
+    def name(self):
+        return self._name
+
     def save(self, pre_ckp_path: Path, arch_path: Path):
         # save network architecture
         arch_path.open('w', encoding='utf-8').write(self._state['arch'])
