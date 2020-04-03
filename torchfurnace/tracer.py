@@ -42,7 +42,7 @@ class Tracer(object):
         # remain Top5 best model checkpoint
         files = self._dirs['checkpoint_best'].glob('{}*'.format(self._clean_up_prefix))
         import re, os
-        files = sorted(files, key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)
+        files = sorted(files, key=lambda x: float(re.findall(r'Acc(.*?)_', str(x))[0]), reverse=True)
         for file in files[self._clean_up_top:]:
             os.remove(file)
 

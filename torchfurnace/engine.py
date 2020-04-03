@@ -386,6 +386,6 @@ class Engine(object, metaclass=abc.ABCMeta):
 
                 if self._args.adjust_lr:
                     [lr.step() for lr in ajlr]
-        log(f"Best Acc1: {self._state['best_acc1']}")
+        print(f"Best Acc1:{self._state['best_acc1']}")
         self._close()
         return self._state['best_acc1']
