@@ -110,7 +110,7 @@ class Model(object):
             shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / best_name)
 
     def load(self, pre_path: Path) -> dict:
-        # pre_path: located in work_name/models
+        # pre_path: located in work_suffix_name/models
         exp_name, file_name = self._name.split('/')
         file_path = pre_path / exp_name / 'checkpoint' / 'best' / file_name
         ret = {'start_epoch': -1, 'best_acc1': -1}

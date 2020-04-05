@@ -142,6 +142,12 @@ class Engine(object, metaclass=abc.ABCMeta):
         """
         pass
 
+    def _after_evaluate(self):
+        """
+        execute something after evaluation
+        """
+        pass
+
     def _on_end_epoch(self, model, optimizer, is_best):
         """save more than one model and optimizer, for example GAN"""
         postfix = f'_{self._args.extension}'
@@ -220,7 +226,7 @@ class Engine(object, metaclass=abc.ABCMeta):
                         'data_time': self._meters.data_time.avg
                     }, training_iterations)
                     self._add_on_end_batch_tb(True)
-        else:
+        elif not self._args.evaluate:
             fix_log = ('Testing: Epoch [{0}]  Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f}\t[best:{best_acc}]\t'
                        .format(self._state['epoch'], top1=self._meters.top1, top5=self._meters.top5,
                                loss=self._meters.losses, best_acc=self._state['best_acc1']))
@@ -365,7 +371,10 @@ class Engine(object, metaclass=abc.ABCMeta):
             [m.cuda(self._args.gpu) for m in (model if isinstance(model, list) else [model])]
 
         if self._args.evaluate:
+            if not self._args.resume:
+                raise RuntimeError("Please load checkpoint using --resume")
             self._validate(model, val_loader)
+            self._after_evaluate()
         else:
             ajlr = None
             if self._args.adjust_lr:
@@ -386,6 +395,7 @@ class Engine(object, metaclass=abc.ABCMeta):
 
                 if self._args.adjust_lr:
                     [lr.step() for lr in ajlr]
-        print(f"Best Acc1:{self._state['best_acc1']}")
-        self._close()
-        return self._state['best_acc1']
+
+            print(f"Best Acc1:{self._state['best_acc1']}")
+            self._close()
+            return self._state['best_acc1']
