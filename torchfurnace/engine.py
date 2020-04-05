@@ -146,7 +146,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         """
         load checkpoint
         """
-        for pth, m in zip(self._args.resume, [model] if not isinstance(model, list) else model):
+        for pth, m in zip(self._args.evaluate, [model] if not isinstance(model, list) else model):
             if os.path.isfile(pth):
                 log("=> loading checkpoint '{}'".format(pth))
                 checkpoint = torch.load(pth, map_location='cpu')
@@ -385,6 +385,9 @@ class Engine(object, metaclass=abc.ABCMeta):
             [m.cuda(self._args.gpu) for m in (model if isinstance(model, list) else [model])]
 
         if self._args.evaluate:
+            self._args.p_bar = True
+            self._args.no_tb = False
+
             self._before_evaluate(model)
             self._validate(model, val_loader)
             self._after_evaluate()
