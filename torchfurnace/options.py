@@ -29,8 +29,8 @@ class Parser(ArgumentParser):
         self.add_argument('-gpu', type=int, default=None, help='the number of gpu id')
         self.add_argument('--exp_suffix', type=str, default='', help='some extensional information for experiment file name')
         self.add_argument('--ext', dest='extension', type=str, default='', help='some extensional information, as flag')
-        self.add_argument('--resume', default='', type=str, nargs='+', metavar='PATH', help='pattern like work_suffix_name/models')
-        self.add_argument('-eval', dest='evaluate', action='store_true', help='evaluate model on validation set')
+        self.add_argument('--resume', default='', type=str, nargs='+', metavar='PATH', help='pattern like experiment_name/models')
+        self.add_argument('-eval', dest='evaluate', default='', type=str, nargs='+', help='checkpoint path on evaluation model')
         self.add_argument('--deterministic', action='store_true', help='fix pytorch framework seed to recurrent result')
         self.add_argument('--adjust_lr', action='store_true', help='ajust learning rate')
 

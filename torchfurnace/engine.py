@@ -142,6 +142,20 @@ class Engine(object, metaclass=abc.ABCMeta):
         """
         pass
 
+    def _before_evaluate(self, model):
+        """
+        load checkpoint
+        """
+        for pth, m in zip(self._args.resume, [model] if not isinstance(model, list) else model):
+            if os.path.isfile(pth):
+                log("=> loading checkpoint '{}'".format(pth))
+                checkpoint = torch.load(pth, map_location='cpu')
+                m.load_state_dict(checkpoint['state_dict'])
+                log("=> loaded checkpoint '{}' (epoch {} Acc@1 {})"
+                    .format(pth, checkpoint['epoch'], checkpoint['best_acc1']))
+            else:
+                assert False, "=> no checkpoint found at '{}'".format(pth)
+
     def _after_evaluate(self):
         """
         execute something after evaluation
@@ -371,8 +385,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             [m.cuda(self._args.gpu) for m in (model if isinstance(model, list) else [model])]
 
         if self._args.evaluate:
-            if not self._args.resume:
-                raise RuntimeError("Please load checkpoint using --resume")
+            self._before_evaluate(model)
             self._validate(model, val_loader)
             self._after_evaluate()
         else:
