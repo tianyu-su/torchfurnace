@@ -87,6 +87,13 @@ class Engine(object, metaclass=abc.ABCMeta):
             # RuntimeError: CUDA error: invalid device ordinal
             self._args.gpu = 0
 
+        if self._args.evaluate:
+            self._args.p_bar = True
+            self._args.no_tb = False
+
+        if self._args.p_bar:
+            self._args.print_freq = 1
+
     def _warp_loader(self, training, dataset):
         return torch.utils.data.DataLoader(dataset, batch_size=self._args.batch_size, num_workers=self._args.workers,
                                            pin_memory=True, shuffle=training)
@@ -94,9 +101,6 @@ class Engine(object, metaclass=abc.ABCMeta):
     def _init_learning(self):
         self._args = self._parser.parse_args()
         self._do_args()
-
-        if self._args.p_bar:
-            self._args.print_freq = 1
 
         self._tracer = \
             Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name, clean_up=self._args.clean_up) \
@@ -385,9 +389,6 @@ class Engine(object, metaclass=abc.ABCMeta):
             [m.cuda(self._args.gpu) for m in (model if isinstance(model, list) else [model])]
 
         if self._args.evaluate:
-            self._args.p_bar = True
-            self._args.no_tb = False
-
             self._before_evaluate(model)
             self._validate(model, val_loader)
             self._after_evaluate()
