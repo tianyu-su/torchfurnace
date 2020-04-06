@@ -31,6 +31,8 @@ class Engine(object, metaclass=abc.ABCMeta):
     _add_on_end_batch_log:     add some your log information
     _add_on_end_batch_tb:      add some your visualization for tensorboard by add_xxx
     _add_record:               add some record information
+    _before_evaluate:          define your operation before calling _validate evaluation mode
+    _after_evaluate:           define your operation after calling _validate evaluation mode
     """
 
     def __init__(self, parser: Parser, experiment_name='exp'):

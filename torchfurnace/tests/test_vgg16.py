@@ -5,8 +5,6 @@
 test framework efficient
 setup: https://github.com/kuangliu/pytorch-cifar/blob/master/main.py
 """
-import torchvision
-
 
 __author__ = 'tianyu'
 import sys
@@ -20,6 +18,7 @@ import torch
 from torch.optim.lr_scheduler import MultiStepLR
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision
 import torchvision.transforms as transforms
 
 from torchfurnace import Engine, Parser

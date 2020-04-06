@@ -4,7 +4,6 @@
 """
 module description
 """
-import torch
 
 __author__ = 'tianyu'
 
@@ -15,6 +14,7 @@ print('add path:', str(Path(__file__).absolute().parent.parent.parent))
 sys.path.append(str(Path(__file__).absolute().parent.parent.parent))
 print(f'Testing {Path(__file__)}')
 
+import torch
 from torchfurnace import Tracer
 import torchfurnace.utils.tracer_component as tc
 from pathlib import Path
@@ -22,7 +22,7 @@ import torchvision.models as models
 from torchfurnace import Parser
 from test_utils import test_function
 
-tracer = Tracer(Path(r'.'), 'mine_network') \
+tracer = Tracer(root_dir=Path('.'), work_name='mine_network') \
     .tb_switch(True) \
     .attach(experiment_name='exp', logger_name='log', override=True)
 

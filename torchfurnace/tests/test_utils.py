@@ -4,9 +4,10 @@
 """
 module description
 """
-import functools
 
 __author__ = 'tianyu'
+
+import functools
 
 
 def test_function(func):

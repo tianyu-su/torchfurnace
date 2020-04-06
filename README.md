@@ -1,4 +1,3 @@
-# Big refactor, but README is old. Fill it in soon. orz
 # torchfurnace [![Build Status](https://travis-ci.com/tianyu-su/torchfurnace.svg?branch=master)](https://travis-ci.com/tianyu-su/torchfurnace) ![](https://img.shields.io/badge/pytorch-1.1.0-blue) ![](https://img.shields.io/badge/python-3.6-blue)
 
 `torchfurnace` is a tool package for training model, pre-processing dataset and managing experiment record in pytorch AI tasks.
@@ -16,25 +15,30 @@ VGG16 for CIFAR10
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision
+import torchvision.models as models
 import torchvision.transforms as transforms
 from torchvision.datasets import CIFAR10
 from torch.optim.lr_scheduler import MultiStepLR
 from torchfurnace import Engine, Parser
+from torchfurnace.utils.function import accuracy
 
 # define training process of your model
 class VGGNetEngine(Engine):
     @staticmethod
     def _on_forward(training, model, inp, target, optimizer=None) -> dict:
-        ret = {'loss': object, 'preds': object}
+        ret = {'loss': object, 'acc1': object, 'acc5': object}
         output = model(inp)
         loss = F.cross_entropy(output, target)
+
         if training:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        ret['loss'] = loss
-        ret['preds'] = output
+
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+        ret['loss'] = loss.item()
+        ret['acc1'] = acc1.item()
+        ret['acc5'] = acc5.item()
         return ret
 
     @staticmethod
@@ -54,21 +58,22 @@ def main():
     testset = CIFAR10(root='data', train=False, download=True, transform=ts)
 
     # define model and optimizer
-    net = torchvision.models.vgg16(pretrained=False, num_classes=10)
+    net = models.vgg16(pretrained=False, num_classes=10)
     net.avgpool = nn.AvgPool2d(kernel_size=1, stride=1)
     net.classifier = nn.Linear(512, 10)
     optimizer = torch.optim.Adam(net.parameters())
 
     # new engine instance
-    eng = VGGNetEngine(parser).experiment_name(experiment_name)
+    eng = VGGNetEngine(parser,experiment_name)
     acc1 = eng.learning(net, optimizer, trainset, testset)
     print('Acc1:', acc1)
 
 if __name__ == '__main__':
     import sys
-    run_params='--dataset CIFAR10 -lr 0.1 -bs 128 -j 2 --epochs 400 --adjust_lr'
+    run_params = '--dataset CIFAR10 -lr 0.1 -bs 128 -j 2 --epochs 400 --adjust_lr'
     sys.argv.extend(run_params.split())
     main()
+
 ```
 
 ## Introduction
@@ -99,15 +104,19 @@ For example (a minimal configuration):
 class VGGNetEngine(Engine):
     @staticmethod
     def _on_forward(training, model, inp, target, optimizer=None) -> dict:
-        ret = {'loss': object, 'preds': object}
+        ret = {'loss': object, 'acc1': object, 'acc5': object}
         output = model(inp)
         loss = F.cross_entropy(output, target)
+
         if training:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        ret['loss'] = loss
-        ret['preds'] = output
+
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+        ret['loss'] = loss.item()
+        ret['acc1'] = acc1.item()
+        ret['acc5'] = acc5.item()
         return ret
 ```
 
@@ -115,7 +124,7 @@ Above,  you have done the preparatory work of framework, and then you define mod
 
 ```python
 parser = Parser('TVGG11')
-eng = VGGNetEngine(parser).experiment_name(experiment_name)
+eng = VGGNetEngine(parser，experiment_name)
 eng.learning(model, optimizer, train_ds, val_ds)
 ```
 
@@ -130,6 +139,9 @@ If you want more customizable features, you can override them with the following
 3. `_on_start_batch`: define how to get input and target  from your dataset and put them on GPU.
 4. `_add_on_end_batch_log`: You can add some log output information just like other meters in `_on_end_batch`. 
 5. `_add_on_end_batch_tb`:  You can add some tensorboard output information just like other meters in `_on_end_batch`. 
+6. `_add_record`:  you can add some record after `_on_forward` 
+7. `_before_evaluate`: define your operation before calling `_validate`  evaluation mode
+8. `_after_evaluate`: define your operation after calling `_validate` evaluation mode
 
 #### Tracer
 
@@ -145,7 +157,8 @@ For example:
 
 ```python
 from torchfurnace import Tracer
-tracer = Tracer('my_network').attach('expn')
+tracer = Tracer(root_dir=Path('.'),work_name= 'mine_network')\
+    .attach(experiment_name='exp', logger_name='log', override=True)
 ```
 
 ##### save experiment configuration
@@ -264,12 +277,14 @@ print(args)
 
 Also, you can open `from torchfurnace import Parser` to get more information.
 
-##### add option in Engine
+##### add option to engine
 
 ```python
 parser = Parser('TVGG16')
 parser.add_argument('--add',default='addtion',type=str)
-eng = Engine(parser).experiment_name(experiment_name)
+# dynamicly assign to defined option, for example
+parser.add('--epoch','1').add('--debug')
+eng = Engine(parser,experiment_name)
 ```
 
 #### ImageFolderLMDB
@@ -425,7 +440,7 @@ Following methods are based on default setup.
 3. open process bar:  `--p_bar`
 4. change total data directory: `--work_dir your_path`
 5. remain best checkpoint Top k: `--clean_up k` 
-6. run again with same setup, but default options will override old data. `--nowtime_exp`
+6. run again with same setup meanwhile remaining old data. `--nowtime_exp`
 7. make special marks for model checkpoint or other aspects: `--ext sp1`
 8. make special marks for experiment name: `--exp_suffix`
 
