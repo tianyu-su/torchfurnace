@@ -12,7 +12,6 @@ import sys
 from pathlib import Path
 
 print('add path:', str(Path(__file__).absolute().parent.parent.parent))
-
 sys.path.append(str(Path(__file__).absolute().parent.parent.parent))
 print(f'Testing {Path(__file__)}')
 

@@ -7,7 +7,6 @@ setup: https://github.com/kuangliu/pytorch-cifar/blob/master/main.py
 """
 import torchvision
 
-from torchfurnace.utils.function import accuracy
 
 __author__ = 'tianyu'
 import sys
@@ -25,6 +24,7 @@ import torchvision.transforms as transforms
 
 from torchfurnace import Engine, Parser
 from .test_utils import test_function
+from torchfurnace.utils.function import accuracy
 
 # define experiment
 parser = Parser('TVGG16')

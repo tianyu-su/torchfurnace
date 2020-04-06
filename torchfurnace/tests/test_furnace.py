@@ -4,7 +4,6 @@
 """
 module description
 """
-from torchfurnace.utils.function import accuracy
 
 __author__ = 'tianyu'
 
@@ -25,6 +24,7 @@ import torchvision.models as models
 
 from torchfurnace import Engine, Parser
 from .test_utils import test_function
+from torchfurnace.utils.function import accuracy
 
 # define experiment
 parser = Parser('TVGG11')
