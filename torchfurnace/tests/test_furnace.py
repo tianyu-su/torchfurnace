@@ -4,6 +4,8 @@
 """
 module description
 """
+from torchfurnace.utils.function import accuracy
+
 __author__ = 'tianyu'
 
 import sys
@@ -35,7 +37,7 @@ class VGGNetEngine(Engine):
     @staticmethod
     def _on_forward(training, model, inp, target, optimizer=None) -> dict:
         # ret can expand but DONT Shrink
-        ret = {'loss': object, 'preds': object}
+        ret = {'loss': object, 'acc1': object, 'acc5': object}
 
         output = model(inp)
         loss = F.cross_entropy(output, target)
@@ -45,9 +47,10 @@ class VGGNetEngine(Engine):
             loss.backward()
             optimizer.step()
 
-        ret['loss'] = loss
-        ret['preds'] = output
-
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+        ret['loss'] = loss.item()
+        ret['acc1'] = acc1.item()
+        ret['acc5'] = acc5.item()
         return ret
 
 
@@ -78,8 +81,8 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_dec
 @test_function
 def test_learning():
     global parser, experiment_name, args
-    eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    sys.argv.extend(['--epochs', '1'])
+    parser.add('--epochs', '1')
+    eng = VGGNetEngine(parser, experiment_name)
     acc1 = eng.learning(model, optimizer, train_ds, val_ds)
     print('Acc1:', acc1)
 
@@ -87,10 +90,8 @@ def test_learning():
 @test_function
 def test_validation():
     global parser, experiment_name
-    eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    sys.argv.extend(['--epochs', '1'])
-    sys.argv.extend(['-eval'])
-    sys.argv.extend(['--resume', f'{experiment_name}/VGG_Epk1_Acc0.00_best.pth.tar'])
+    parser.add('--epochs', '1').add('-eval', f'TVGG11/models/{experiment_name}/checkpoint/best/VGG_Epk1_Acc0.00_best.pth.tar')
+    eng = VGGNetEngine(parser, experiment_name)
     eng.learning(model, optimizer, train_ds, val_ds)
 
 

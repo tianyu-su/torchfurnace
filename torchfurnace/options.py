@@ -44,9 +44,9 @@ class Parser(ArgumentParser):
         self.add_argument('--no_tb', action='store_false', help='close tensorboard visualization')
         self.add_argument('--nowtime_exp', '-orz', action='store_false', help='automatically add nowtime as the postfix of experiment directory')
 
-    @staticmethod
-    def add(name, value):
+    def add(self, name, value=''):
         sys.argv.extend([name, value])
+        return self
 
 
 if __name__ == '__main__':

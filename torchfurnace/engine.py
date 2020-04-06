@@ -291,10 +291,10 @@ class Engine(object, metaclass=abc.ABCMeta):
             optimizer.step()
 
         ret['loss'] = loss.item()
-        ret['acc'] = [acc1.item(), acc5.item()]
+        ret['acc1'] = acc1.item()
+        ret['acc5'] = acc5.item()
 
         return ret
-        # raise NotImplementedError
 
     def _train(self, model, train_loader, optimizer, epoch):
         self._switch_training = True

@@ -23,8 +23,10 @@ import torchvision.models as models
 from torchfurnace import Parser
 from .test_utils import test_function
 
+tracer = Tracer(Path(r'.'), 'mine_network') \
+    .tb_switch(True) \
+    .attach(experiment_name='exp', logger_name='log', override=True)
 
-tracer = Tracer(Path(r'.'), 'mine_network').tb_switch(True).attach('expn')
 model = models.vgg11(pretrained=False)
 optimizer = torch.optim.Adam(model.parameters())
 

@@ -7,6 +7,8 @@ setup: https://github.com/kuangliu/pytorch-cifar/blob/master/main.py
 """
 import torchvision
 
+from torchfurnace.utils.function import accuracy
+
 __author__ = 'tianyu'
 import sys
 from pathlib import Path
@@ -24,7 +26,6 @@ import torchvision.transforms as transforms
 from torchfurnace import Engine, Parser
 from .test_utils import test_function
 
-
 # define experiment
 parser = Parser('TVGG16')
 args = parser.parse_args()
@@ -36,7 +37,7 @@ class VGGNetEngine(Engine):
     @staticmethod
     def _on_forward(training, model, inp, target, optimizer=None) -> dict:
         # ret can expand but DONT Shrink
-        ret = {'loss': object, 'preds': object}
+        ret = {'loss': object, 'acc1': object, 'acc5': object}
 
         output = model(inp)
         loss = F.cross_entropy(output, target)
@@ -46,9 +47,10 @@ class VGGNetEngine(Engine):
             loss.backward()
             optimizer.step()
 
-        ret['loss'] = loss
-        ret['preds'] = output
-
+        acc1, acc5 = accuracy(output, target, topk=(1, 5))
+        ret['loss'] = loss.item()
+        ret['acc1'] = acc1.item()
+        ret['acc5'] = acc5.item()
         return ret
 
     @staticmethod
@@ -116,18 +118,13 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_dec
 
 @test_function
 def test_precision():
-    import sys
     global experiment_name
-    eng = VGGNetEngine(parser).experiment_name(experiment_name)
-    sys.argv.extend('-lr 0.1 -mmt 0.9 -wd 5e-4 -bs 128 -j 2  --epochs 400 --adjust_lr'.split())
+    eng = VGGNetEngine(parser, experiment_name)
     acc1 = eng.learning(model, optimizer, trainset, testset)
     print('Acc1:', acc1)
 
 
-@test_function
-def test_img2lmdb_precision():
-    pass
-
-
 if __name__ == '__main__':
+    sys.argv.extend('-lr 0.1 -mmt 0.9 -wd 5e-4 -bs 128 -j 2  --epochs 400 --adjust_lr'.split())
+
     test_precision()
