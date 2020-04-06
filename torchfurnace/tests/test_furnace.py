@@ -23,7 +23,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 
 from torchfurnace import Engine, Parser
-from .test_utils import test_function
+from test_utils import test_function
 from torchfurnace.utils.function import accuracy
 
 # define experiment
