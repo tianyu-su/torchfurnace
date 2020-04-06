@@ -12,7 +12,7 @@ script:
   - python test_img2lmdb.py
   - python test_tracer.py
   - echo 'log of test_tracer.py '
-  - cat mine_network/logs/expn/log
+  - cat mine_network/logs/exp/log
 branches:
   only:
     - master

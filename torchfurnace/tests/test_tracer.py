@@ -55,7 +55,7 @@ def test_store_model():
 @test_function
 def test_load_model():
     global tracer, model, optimizer
-    pth = f"exp/{model.__class__.__name__}_Epk{99}_Acc{0.66}_extinfo_best.pth.tar"
+    pth = f"exp/{model.__class__.__name__}_extinfo_Epk{99}_Acc{0.66}_best.pth.tar"
     ret = tracer.load(tc.Model(
         pth, {
             'model': model,
