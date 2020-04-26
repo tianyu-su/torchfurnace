@@ -23,30 +23,10 @@ class Config(object):
 
     def __init__(self, cfg) -> None:
         super().__init__()
-        if isinstance(cfg, configparser.ConfigParser):
-            self.content = Config.from_cfg(cfg)
-        elif isinstance(cfg, str):
-            self.content = Config.from_ini(cfg)
-        elif isinstance(cfg, dict):
-            self.content = json.dumps(Config.from_dict(cfg), indent=2)
+        self.cfg = cfg
 
-    @staticmethod
-    def from_ini(ini):
-        config = configparser.ConfigParser()
-        config.read_string(ini)
-        return Config.from_cfg(config)
-
-    @staticmethod
-    def from_cfg(cfg):
-        dic = {}
-        sections = cfg.sections()
-        for section in sections:
-            dic_section = {}
-            options = cfg.options(section)
-            for option in options:
-                dic_section[option] = cfg.get(section, option)
-            dic[section] = dic_section
-        return dic
+    def add_item(self, k, v):
+        self.cfg[k] = v
 
     @staticmethod
     def from_dict(dic):
@@ -72,7 +52,8 @@ class Config(object):
         return self.content
 
     def save(self, path: Path):
-        path.open('w', encoding='utf-8').write(str(self.content))
+        content = json.dumps(Config.from_dict(self.cfg), indent=2)
+        path.open('w', encoding='utf-8').write(str(content))
 
 
 class Model(object):

@@ -44,6 +44,10 @@ class Parser(ArgumentParser):
         self.add_argument('--no_tb', action='store_false', help='close tensorboard visualization')
         self.add_argument('--nowtime_exp', '-orz', action='store_false', help='automatically add nowtime as the postfix of experiment directory')
 
+        # ========================= Snapshot Repo Configs ==========================
+        self.add_argument('--close_snapgit', dest='snapgit', action='store_false', help='close code snapshot when git tool isn\'t installed in your system or you don\'t want to open this function!')
+        self.add_argument('--revert_snapgit', type=str, default='', help='commit id for reverting. Don\'t completed hash str but str length of 8 at least ')
+
     def add(self, name, value=''):
         sys.argv.extend([name, value])
         return self

@@ -51,6 +51,7 @@ def load_pretrained(model, pth):
     else:
         raise RuntimeError(f'Not exist ==> {pth}')
 
+
 def filter_best_model(best_dir: Path, prefix_name: str):
     best_path = sorted(best_dir.glob(prefix_name), key=lambda x: re.findall(r'Acc(.*?)_', str(x))[0], reverse=True)[0]
     return best_path.absolute()
@@ -60,14 +61,24 @@ def get_meters(names):
     return {k: AverageMeter() for k in names}
 
 
-def log(msg, green=False, p_bar=False, current_batch=0, total_batch=0):
-    if green:
-        print('\033[92m', end="")
+def log(msg, color=None, p_bar=False, current_batch=0, total_batch=0):
+    if isinstance(color, str):
+        color = {
+            "black": 30,
+            "red": 31,
+            "green": 32,
+            "yellow": 33,
+            "blue": 34,
+            "purple": 35,
+            "cyan": 36,
+            "white": 37
+        }[color]
+    if color is not None:
+        msg = "\033[%dm%s\033[0m" % (color, msg)
     if p_bar:
         progress_bar(current_batch, total_batch, msg)
     else:
         print(msg)
-    print('\033[0m', end="")
 
 
 class Chain(object):

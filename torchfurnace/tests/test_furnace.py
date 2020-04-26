@@ -82,10 +82,10 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_dec
 def test_learning():
     global parser, experiment_name, args
     parser.add('--epochs', '1')
+    # parser.add('--revert_snapgit','6b22ca664e7')
     eng = VGGNetEngine(parser, experiment_name)
     acc1 = eng.learning(model, optimizer, train_ds, val_ds)
     print('Acc1:', acc1)
-
 
 @test_function
 def test_validation():
@@ -139,9 +139,9 @@ if __name__ == '__main__':
     sys.argv.append('--debug')
 
     test_learning()
-    test_validation()
+    # test_validation()
 
     # The loss are different between save_model and load_model.
     # Why ????
-    toy_save()
-    toy_load()
+    # toy_save()
+    # toy_load()

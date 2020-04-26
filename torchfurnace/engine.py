@@ -108,8 +108,12 @@ class Engine(object, metaclass=abc.ABCMeta):
             Tracer(root_dir=Path(self._args.work_dir), work_name=self._parser.work_name, clean_up=self._args.clean_up) \
                 .tb_switch(self._args.no_tb) \
                 .debug_switch(self._args.debug or self._args.p_bar) \
+                .snap_git_switch(self._args.snapgit) \
                 .attach(experiment_name=self._experiment_name, override=self._args.nowtime_exp,
                         logger_name=self._args.logger_name)
+
+        if self._args.revert_snapgit:
+            self._tracer.revert(self._args.revert_snapgit)
 
     @property
     def tracer(self):
@@ -250,7 +254,7 @@ class Engine(object, metaclass=abc.ABCMeta):
             fix_log = ('Testing: Epoch [{0}]  Acc@1 {top1.avg:.3f}\tAcc@5 {top5.avg:.3f}\tLoss {loss.avg:.4f}\t[best:{best_acc}]\t'
                        .format(self._state['epoch'], top1=self._meters.top1, top5=self._meters.top5,
                                loss=self._meters.losses, best_acc=self._state['best_acc1']))
-            log(fix_log + self._add_on_end_batch_log(False), green=True)
+            log(fix_log + self._add_on_end_batch_log(False), color="green")
             if self._args.no_tb:
                 self._tracer.tb.add_scalars('data/loss', {
                     'validation': self._meters.losses.avg,
@@ -382,7 +386,7 @@ class Engine(object, metaclass=abc.ABCMeta):
         train_loader = self._warp_loader(True, train_dataset)
         val_loader = self._warp_loader(False, val_dataset)
 
-        log('==> Start ...', green=True)
+        log('==> Start ...', color="red")
         if self._args.resume:
             self._resume(model, optimizer)
 
