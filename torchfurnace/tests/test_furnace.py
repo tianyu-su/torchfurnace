@@ -139,9 +139,9 @@ if __name__ == '__main__':
     sys.argv.append('--debug')
 
     test_learning()
-    # test_validation()
+    test_validation()
 
     # The loss are different between save_model and load_model.
     # Why ????
-    # toy_save()
-    # toy_load()
+    toy_save()
+    toy_load()

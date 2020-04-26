@@ -6,20 +6,19 @@ a tool module for managing model checkpoints, tensorboard, and experiment record
 The key idea is to deal with the structure of directory, we only consider what files are needed to save, and then
 the file will be saved in the appropriate location.
 """
-import subprocess
-
-from torchfurnace.utils.function import log
 
 __author__ = 'tianyu'
 
+import shutil
+import subprocess
 import sys
 import time
-import shutil
-from pathlib import Path
 from contextlib import contextmanager
+from pathlib import Path
 
 from torch.utils.tensorboard import SummaryWriter
 
+from torchfurnace.utils.function import log
 from .utils.tracer_component import Config, Model
 
 
