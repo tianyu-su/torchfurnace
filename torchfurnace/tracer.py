@@ -175,7 +175,8 @@ class Tracer(object):
         return self._dirs.get(path_key)
 
     def close(self):
-        self._clean_up()
+        if self._clean_up_top > 0:
+            self._clean_up()
         # close I/O
         if self._tb_switch: self._tb.close()
         if not self._debug_switch:
