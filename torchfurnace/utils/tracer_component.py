@@ -86,8 +86,12 @@ class Model(object):
             import re
             # ckp_name = f"{model.__class__.__name__}_Epk{self._state['epoch'] + 1}_Acc{self._state['best_acc1']:.2f}{postfix}.pth.tar"
             model_name = self._name.split(".pth.tar")[0]
+            if type(self._state['best_acc1']) == float:
+                tmp_acc = f"{self._state['best_acc1']:.2f}"
+            else:
+                tmp_acc = f"{self._state['best_acc1']}"
             best_name = self._name.replace('.pth.tar', '_best.pth.tar') \
-                .replace(model_name, f"{model_name.split('.pth.tar')[0]}_Epk{self._state['epoch']}_Acc{self._state['best_acc1']:.2f}")
+                .replace(model_name, f"{model_name.split('.pth.tar')[0]}_Epk{self._state['epoch']}_Acc{tmp_acc}")
             shutil.copyfile(Path(pre_ckp_path / self._name), pre_ckp_path / 'best' / best_name)
 
     def load(self, pre_path: Path) -> dict:
